@@ -27,13 +27,13 @@ RUN mkdir -p /data && chown appuser:appgroup /data
 
 USER appuser
 
-ENV PORT=3000
+ENV PORT=3100
 ENV DATA_DIR=/data
 ENV NODE_ENV=production
 
-EXPOSE 3000
+EXPOSE 3100
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD wget -qO- http://localhost:3000/health || exit 1
+  CMD wget -qO- http://localhost:3100/health || exit 1
 
 CMD ["node", "server.js"]

@@ -1,10 +1,8 @@
-version: "3.9"
-
 # ═══════════════════════════════════════════════════════════════
 #  World Cup 2026 Raffle — Docker Compose
 #
 #  Services:
-#    web       — Express app (port 3000, internal only)
+#    web       — Express app (port 3100, internal only)
 #    cloudflared — Cloudflare Zero Trust tunnel (no ports exposed)
 #
 #  Volumes:
@@ -21,7 +19,7 @@ services:
     container_name: worldcup_web
     restart: unless-stopped
     environment:
-      PORT: "3000"
+      PORT: "3100"
       DATA_DIR: "/data"
       NODE_ENV: "production"
     volumes:
@@ -32,7 +30,7 @@ services:
     # ⚠ NOT exposed to the host — traffic comes via Cloudflare tunnel only
     # If you want local testing without the tunnel, uncomment:
     # ports:
-    #   - "3000:3000"
+    #   - "3100:3100"
 
   # ── Cloudflare Zero Trust Tunnel ───────────────────────────
   cloudflared:

@@ -5,7 +5,7 @@ const { parse } = require('csv-parse/sync');
 const { stringify } = require('csv-stringify/sync');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3100;
 
 // Persistent data directory (Docker volume mount point)
 const DATA_DIR = process.env.DATA_DIR || '/data';
