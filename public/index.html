@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>World Cup 2026 — Raffle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* Backgrounds — deep navy, visibly lighter than before */
+  --bg:#0b1e36;--bg-card:#132d4f;--bg-card2:#1a3a62;
+  --border:rgba(255,255,255,.10);--border-hi:rgba(255,255,255,.22);
+
+  /* Mexico — vibrant green */
+  --green:#00e676;--green-dark:#00c853;--green-glow:rgba(0,230,118,.22);
+
+  /* Canada — vibrant red */
+  --red:#ff4757;--red-dark:#e53935;--red-glow:rgba(255,71,87,.22);
+
+  /* USA — vibrant blue */
+  --blue:#4d9fff;--blue-dark:#2979ff;--blue-glow:rgba(77,159,255,.22);
+
+  /* Accents */
+  --gold:#f0c040;--gold-glow:rgba(240,192,64,.2);
+  --silver:#b0bec5;--bronze:#cd7f32;
+
+  /* Text — slightly warm white with navy-tinted mids */
+  --text:#f0f6ff;--text-muted:#7a9cc0;--text-dim:#3d5a7a;
+
+  --fd:'Bebas Neue',sans-serif;--fc:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;
+  --r:10px;--rl:18px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;min-height:100vh}
+
+.orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.28;pointer-events:none;z-index:0;animation:drift 18s ease-in-out infinite alternate}
+.o1{width:600px;height:600px;background:var(--green-dark);top:-200px;left:-150px;animation-delay:0s}
+.o2{width:500px;height:500px;background:var(--blue-dark);top:50%;right:-200px;animation-delay:-6s}
+.o3{width:450px;height:450px;background:var(--red-dark);bottom:10%;left:20%;animation-delay:-12s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.08)}}
+.grid-lines{position:fixed;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.015) 79px,rgba(255,255,255,.015) 80px);pointer-events:none;z-index:0}
+section,header,footer{position:relative;z-index:1}
+
+/* ── OPEN BADGE ── */
+.open-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.13);border:1px solid var(--red);border-radius:50px;padding:6px 18px;font-family:var(--fc);font-weight:700;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:24px}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.4s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:80px 24px 72px;max-width:900px;margin:0 auto}
+.trophy{font-size:72px;display:block;margin-bottom:16px;animation:tp 3s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(240,192,64,.3))}
+@keyframes tp{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
+.eyebrow{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.35em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.hero-title{font-family:var(--fd);font-size:clamp(64px,12vw,140px);line-height:.92;letter-spacing:.02em;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+.hero-title .word{display:block}
+.hero-title .accent{background:linear-gradient(135deg,var(--red) 0%,var(--blue) 50%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-family:var(--fc);font-weight:300;font-size:18px;letter-spacing:.4em;color:var(--text-muted);text-transform:uppercase;margin-bottom:40px}
+
+/* ── INFO CARDS ── */
+.cd-grid{display:flex;align-items:stretch;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px}
+.cd-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:22px 28px;display:flex;flex-direction:column;gap:4px;min-width:190px;transition:border-color .2s}
+.cd-card:hover{border-color:var(--border-hi)}
+.cd-card.hi{border-color:var(--green);box-shadow:0 0 30px var(--green-glow),inset 0 0 20px rgba(0,230,118,.04)}
+.cd-card.blue-card{border-color:var(--blue);box-shadow:0 0 30px var(--blue-glow)}
+.cd-label{font-family:var(--fc);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
+.cd-date{font-family:var(--fd);font-size:26px;color:var(--text);letter-spacing:.04em}
+.hi .cd-date{color:var(--green)}
+.blue-card .cd-date{color:var(--blue)}
+.cd-note{font-size:12px;color:var(--text-muted)}
+.hero-cta{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#000;font-family:var(--fc);font-weight:700;font-size:16px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:50px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px var(--green-glow)}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,230,118,.45)}
+
+/* ── SECTION TITLES ── */
+.sec-title{font-family:var(--fd);font-size:clamp(36px,6vw,72px);letter-spacing:.04em;text-align:center;margin-bottom:12px}
+.sec-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-bottom:40px;max-width:620px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ── HOW RAFFLE WORKS ── */
+.raffle-sec{max-width:1040px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
+
+.raffle-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:56px}
+.rflow-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:26px 22px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+.rflow-card:hover{border-color:var(--border-hi);transform:translateY(-3px)}
+.rflow-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.rfc-assign::before{background:linear-gradient(90deg,var(--green-dark),var(--green))}
+.rfc-1st::before{background:linear-gradient(90deg,#c9a227,var(--gold))}
+.rfc-2nd::before{background:linear-gradient(90deg,#78909c,var(--silver))}
+.rfc-3rd::before{background:linear-gradient(90deg,#8d5524,var(--bronze))}
+.rfc-rule::before{background:linear-gradient(90deg,var(--red-dark),var(--red))}
+.rflow-icon{font-size:32px;display:block;margin-bottom:14px}
+.rflow-card h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.05em;margin-bottom:8px;color:var(--text)}
+.rflow-card p{font-size:14px;color:var(--text-muted);line-height:1.65}
+.prize-pct{font-family:var(--fd);font-size:42px;letter-spacing:.04em;margin-bottom:4px}
+.pct-gold{color:var(--gold)}
+.pct-silver{color:var(--silver)}
+.pct-bronze{color:var(--bronze)}
+
+
+/* ── RULES BOX ── */
+.rules-box{background:var(--bg-card);border:1px solid rgba(77,159,255,.35);border-radius:var(--rl);padding:28px 32px;margin-bottom:20px}
+.rules-box h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.rules-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.rules-list li{font-size:14px;color:var(--text-muted);line-height:1.6;padding-left:20px;position:relative}
+.rules-list li::before{content:'→';position:absolute;left:0;color:var(--blue);font-weight:700}
+
+/* ── STADIUM IMAGE ── */
+.stadium-wrap{position:relative;width:100%;height:380px;overflow:hidden;z-index:1}
+.stadium-img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block;filter:brightness(.55) saturate(1.1)}
+.stadium-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 25%,transparent 70%,var(--bg) 100%)}
+.stadium-label{position:absolute;bottom:20px;right:24px;font-family:var(--fc);font-size:11px;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase}
+
+/* ── MADE BY ── */
+.madeby{font-family:var(--fc);font-size:12px;color:var(--text-dim);letter-spacing:.08em}
+.madeby span{color:var(--red)}
+
+/* ── FIFA LINKS ── */
+.fifa-link-wrap{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.fifa-link{display:inline-flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:12px 28px;color:var(--text);text-decoration:none;font-family:var(--fc);font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;transition:all .2s}
+.fifa-link:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
+.fifa-link svg{width:18px;height:18px;opacity:.6;transition:opacity .2s}
+.fifa-link:hover svg{opacity:1}
+
+/* ── CONFEDERATION LEGEND ── */
+.conf-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-bottom:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px}
+.conf-item{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)}
+.conf-item:last-child{border-bottom:none}
+.conf-abbr{font-family:var(--fc);font-weight:700;font-size:14px;letter-spacing:.08em;color:var(--blue);min-width:90px;flex-shrink:0}
+.conf-fullname{font-size:13px;color:var(--text-muted);line-height:1.4}
+
+/* ── COUNTRIES ── */
+.countries{max-width:1200px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px}
+.tab{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border-radius:50px;cursor:pointer;transition:all .2s}
+.tab:hover{border-color:var(--border-hi);color:var(--text)}
+.tab.active{background:var(--red);border-color:var(--red);color:#fff}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.loading{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:60px 0;font-family:var(--fc);letter-spacing:.1em}
+.ccard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;padding:16px 10px 14px;gap:10px;transition:all .2s;animation:cin .4s ease both}
+.ccard:hover{border-color:var(--blue);transform:translateY(-4px);background:var(--bg-card2);box-shadow:0 8px 28px rgba(77,159,255,.2)}
+@keyframes cin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cflag{width:72px;height:48px;object-fit:cover;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.5);background:var(--bg-card2)}
+.cname{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.03em;text-align:center;color:var(--text);line-height:1.3}
+.cconf{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-family:var(--fc)}
+
+/* ── REGISTER ── */
+.reg{border-top:1px solid var(--border);padding:80px 24px 120px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.06) 0%,rgba(77,159,255,.04) 60%,transparent 100%)}
+.reg-inner{max-width:680px;margin:0 auto}
+.reg-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-top:-24px;margin-bottom:40px;line-height:1.6}
+.reg-sub strong{color:var(--green)}
+
+.fblock{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:32px;display:flex;flex-direction:column;gap:20px}
+.ffield{display:flex;flex-direction:column;gap:8px}
+.ffield label{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.ffield input{background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;color:var(--text);font-family:var(--fb);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+.ffield input::placeholder{color:var(--text-dim)}
+.ffield input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow)}
+.ecnt{text-align:center;font-family:var(--fc);font-size:13px;color:var(--text-muted);letter-spacing:.06em}
+.sbtn{width:100%;padding:18px;background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);border:none;border-radius:var(--r);color:#000;font-family:var(--fc);font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s;box-shadow:0 4px 20px var(--green-glow)}
+.sbtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,217,106,.45)}
+.sbtn:active:not(:disabled){transform:scale(.98)}
+.sbtn:disabled{opacity:.5;cursor:not-allowed}
+.fnote{text-align:center;font-size:12px;color:var(--text-dim)}
+.toast{margin-top:16px;border-radius:var(--r);font-family:var(--fc);font-size:16px;letter-spacing:.04em;text-align:center;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s,opacity .3s;opacity:0}
+.toast.show{max-height:80px;padding:16px;opacity:1}
+.toast.ok{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green)}
+.toast.err{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}
+
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:13px}
+.fbadge{font-family:var(--fd);font-size:22px;color:var(--text);letter-spacing:.08em;margin-bottom:4px}
+.fsmall{font-size:11px;color:var(--text-dim);margin-top:4px}
+
+@media(max-width:700px){
+  .cgrid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+  .hero{padding:60px 16px 60px}
+  .rules-box{padding:20px}
+  .fblock{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+<div class="grid-lines"></div>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <span class="trophy">🏆</span>
+  <div class="open-badge"><span class="pulse-dot"></span> Raffle Now Open</div>
+  <p class="eyebrow">48 Nations &middot; Random Draw &middot; 3 Prize Tiers</p>
+  <h1 class="hero-title">
+    <span class="word">FIFA</span>
+    <span class="word accent">WORLD CUP</span>
+    <span class="word">2026</span>
+  </h1>
+  <p class="hero-sub">USA &middot; CANADA &middot; MEXICO</p>
+
+  <div class="cd-grid">
+    <div class="cd-card hi">
+      <span class="cd-label">🎟 Raffle Draw</span>
+      <span class="cd-date">June 6, 2026</span>
+      <span class="cd-note">12:00 PM EST — Teams assigned live</span>
+    </div>
+    <div class="cd-card blue-card">
+      <span class="cd-label">Tournament Begins</span>
+      <span class="cd-date">June 11, 2026</span>
+      <span class="cd-note">Group Stage Kicks Off</span>
+    </div>
+  </div>
+  <a href="#register" class="hero-cta">Join the Raffle Now ↓</a>
+</header>
+
+<!-- ── STADIUM IMAGE ── -->
+<div class="stadium-wrap">
+  <img
+    class="stadium-img"
+    src="https://images.unsplash.com/photo-1516242981651-2ee338449dea?w=1600&q=85&auto=format&fit=crop"
+    alt="Aerial view of a World Cup soccer stadium"
+    loading="lazy"
+  />
+  <div class="stadium-overlay"></div>
+  <span class="stadium-label">Photo: Pedro Menezes / Unsplash</span>
+</div>
+
+<!-- ── HOW THE RAFFLE WORKS ── -->
+<section class="raffle-sec" id="how-it-works">
+  <h2 class="sec-title">How the Raffle Works</h2>
+  <p class="sec-sub">Sign up, get randomly assigned teams from the 48 nations, then root for your countries through the entire tournament. Three place tiers — bragging rights on the line.</p>
+
+  <!-- Flow cards -->
+  <div class="raffle-flow">
+    <div class="rflow-card rfc-assign">
+      <span class="rflow-icon">🎲</span>
+      <h3>Random Team Assignment</h3>
+      <p>Once sign-ups close on June 6th at 12 PM EST, every participant is randomly assigned a set of countries. The number of teams each player receives depends on how many people have entered — the more players, the fewer teams per person, keeping it fair across the board.</p>
+    </div>
+    <div class="rflow-card rfc-1st">
+      <span class="rflow-icon">🥇</span>
+      <h3>1st Place</h3>
+      <p>If one of your assigned countries wins the FIFA World Cup Final and lifts the trophy, you win 1st place. This is the top prize.</p>
+    </div>
+    <div class="rflow-card rfc-2nd">
+      <span class="rflow-icon">🥈</span>
+      <h3>2nd Place</h3>
+      <p>The player holding the World Cup runner-up team wins 2nd place. If that nation belongs to the same player who already won 1st place, 2nd place goes to the player holding the highest FIFA-ranked team remaining.</p>
+    </div>
+    <div class="rflow-card rfc-3rd">
+      <span class="rflow-icon">🥉</span>
+      <h3>3rd Place</h3>
+      <p>The team that wins the 3rd-place match (the game between the two semi-final losers) earns 3rd place for their assigned player. This always follows the actual match result — no ranking tiebreakers for this spot.</p>
+    </div>
+    <div class="rflow-card rfc-rule">
+      <span class="rflow-icon">📋</span>
+      <h3>One Place Per Player</h3>
+      <p>If you're lucky enough to hold teams that finish in multiple positions, only your highest placement counts. The next tier rolls down to the next eligible player, so every place goes to a different person.</p>
+    </div>
+  </div>
+
+
+  <!-- Rules clarifications -->
+  <div class="rules-box">
+    <h3>⚖️ Key Rules</h3>
+    <ul class="rules-list">
+      <li>Each player is randomly assigned an equal share of the 48 nations. Assignments happen live at the June 6th draw at 12:00 PM EST.</li>
+      <li>If a single player holds both the 1st and 2nd place finishers, only 1st place is awarded to them. 2nd place then goes to the player holding the highest FIFA-ranked team among all other players.</li>
+      <li>3rd place always goes to the player holding the team that wins the actual 3rd-place match — no exceptions and no ranking tiebreakers for this position.</li>
+      <li>If you hold multiple finishers in the top three, only your best placement counts. Lower placements roll to the next eligible player.</li>
+    </ul>
+  </div>
+
+  <!-- FIFA Links -->
+  <div class="fifa-link-wrap">
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener noreferrer" class="fifa-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      Official Bracket &amp; Tournament Info
+    </a>
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings" target="_blank" rel="noopener noreferrer" class="fifa-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      FIFA 2026 Group Standings
+    </a>
+  </div>
+</section>
+
+<!-- ── THE 48 NATIONS ── -->
+<section class="countries">
+  <h2 class="sec-title">The 48 Nations</h2>
+  <p class="sec-sub">One of these flags could be yours. Filter by confederation.</p>
+  <div class="conf-legend">
+    <div class="conf-item"><span class="conf-abbr">CONCACAF</span><span class="conf-fullname">Confederation of North, Central America &amp; Caribbean Association Football</span></div>
+    <div class="conf-item"><span class="conf-abbr">CONMEBOL</span><span class="conf-fullname">Confederación Sudamericana de Fútbol (South American Football Confederation)</span></div>
+    <div class="conf-item"><span class="conf-abbr">UEFA</span><span class="conf-fullname">Union of European Football Associations</span></div>
+    <div class="conf-item"><span class="conf-abbr">CAF</span><span class="conf-fullname">Confederation of African Football</span></div>
+    <div class="conf-item"><span class="conf-abbr">AFC</span><span class="conf-fullname">Asian Football Confederation</span></div>
+    <div class="conf-item"><span class="conf-abbr">OFC</span><span class="conf-fullname">Oceania Football Confederation</span></div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-conf="ALL">All 48</button>
+    <button class="tab" data-conf="CONCACAF">CONCACAF</button>
+    <button class="tab" data-conf="CONMEBOL">CONMEBOL</button>
+    <button class="tab" data-conf="UEFA">UEFA</button>
+    <button class="tab" data-conf="CAF">CAF</button>
+    <button class="tab" data-conf="AFC">AFC</button>
+    <button class="tab" data-conf="OFC">OFC</button>
+  </div>
+  <div class="cgrid" id="cgrid"><div class="loading">Loading nations…</div></div>
+</section>
+
+<!-- ── REGISTER ── -->
+<section class="reg" id="register">
+  <div class="reg-inner">
+    <h2 class="sec-title">Join the Raffle</h2>
+    <p class="reg-sub">The raffle is <strong>open now</strong>. Sign up before June 6th at 12:00 PM EST. Teams are randomly assigned at the draw.</p>
+
+    <!-- Form -->
+    <div class="fblock">
+      <div class="ffield">
+        <label for="fname">Full Name</label>
+        <input type="text" id="fname" placeholder="John Doe" autocomplete="name"/>
+      </div>
+      <div class="ffield">
+        <label for="contact">Email or Phone Number</label>
+        <input type="text" id="contact" placeholder="john@email.com  or  555-867-5309" autocomplete="email"/>
+      </div>
+      <div class="ecnt" id="ecnt">Checking current entries…</div>
+      <button class="sbtn" id="sbtn" onclick="submitEntry()">
+        <span id="btntxt">Sign Me Up</span>
+      </button>
+      <p class="fnote">⚽ Your info is stored securely and used only for raffle tracking.</p>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="fbadge">⚽ FIFA World Cup 2026</div>
+  <p>USA · Canada · Mexico · 48 Nations · Draw: June 6, 2026</p>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px">
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12px">Official Tournament Info ↗</a>
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12px">Group Standings ↗</a>
+  </div>
+  <p class="fsmall">For entertainment purposes. This raffle is operated independently and is not affiliated with FIFA.</p>
+  <p class="madeby">Made with ⚽ by <span>Alex</span></p>
+</footer>
+
+<script>
+const COUNTRIES=[
+  {name:'United States',code:'us',confederation:'CONCACAF'},
+  {name:'Canada',code:'ca',confederation:'CONCACAF'},
+  {name:'Mexico',code:'mx',confederation:'CONCACAF'},
+  {name:'Panama',code:'pa',confederation:'CONCACAF'},
+  {name:'Honduras',code:'hn',confederation:'CONCACAF'},
+  {name:'Jamaica',code:'jm',confederation:'CONCACAF'},
+  {name:'Argentina',code:'ar',confederation:'CONMEBOL'},
+  {name:'Brazil',code:'br',confederation:'CONMEBOL'},
+  {name:'Colombia',code:'co',confederation:'CONMEBOL'},
+  {name:'Uruguay',code:'uy',confederation:'CONMEBOL'},
+  {name:'Ecuador',code:'ec',confederation:'CONMEBOL'},
+  {name:'Paraguay',code:'py',confederation:'CONMEBOL'},
+  {name:'France',code:'fr',confederation:'UEFA'},
+  {name:'England',code:'gb-eng',confederation:'UEFA'},
+  {name:'Germany',code:'de',confederation:'UEFA'},
+  {name:'Spain',code:'es',confederation:'UEFA'},
+  {name:'Portugal',code:'pt',confederation:'UEFA'},
+  {name:'Netherlands',code:'nl',confederation:'UEFA'},
+  {name:'Belgium',code:'be',confederation:'UEFA'},
+  {name:'Italy',code:'it',confederation:'UEFA'},
+  {name:'Croatia',code:'hr',confederation:'UEFA'},
+  {name:'Switzerland',code:'ch',confederation:'UEFA'},
+  {name:'Denmark',code:'dk',confederation:'UEFA'},
+  {name:'Austria',code:'at',confederation:'UEFA'},
+  {name:'Scotland',code:'gb-sct',confederation:'UEFA'},
+  {name:'Serbia',code:'rs',confederation:'UEFA'},
+  {name:'Turkey',code:'tr',confederation:'UEFA'},
+  {name:'Hungary',code:'hu',confederation:'UEFA'},
+  {name:'Romania',code:'ro',confederation:'UEFA'},
+  {name:'Slovenia',code:'si',confederation:'UEFA'},
+  {name:'Slovakia',code:'sk',confederation:'UEFA'},
+  {name:'Albania',code:'al',confederation:'UEFA'},
+  {name:'Morocco',code:'ma',confederation:'CAF'},
+  {name:'Nigeria',code:'ng',confederation:'CAF'},
+  {name:'Senegal',code:'sn',confederation:'CAF'},
+  {name:"Côte d'Ivoire",code:'ci',confederation:'CAF'},
+  {name:'Egypt',code:'eg',confederation:'CAF'},
+  {name:'Cameroon',code:'cm',confederation:'CAF'},
+  {name:'Ghana',code:'gh',confederation:'CAF'},
+  {name:'Tunisia',code:'tn',confederation:'CAF'},
+  {name:'DR Congo',code:'cd',confederation:'CAF'},
+  {name:'Japan',code:'jp',confederation:'AFC'},
+  {name:'South Korea',code:'kr',confederation:'AFC'},
+  {name:'Iran',code:'ir',confederation:'AFC'},
+  {name:'Australia',code:'au',confederation:'AFC'},
+  {name:'Saudi Arabia',code:'sa',confederation:'AFC'},
+  {name:'Jordan',code:'jo',confederation:'AFC'},
+  {name:'Iraq',code:'iq',confederation:'AFC'},
+  {name:'New Zealand',code:'nz',confederation:'OFC'},
+];
+
+function renderCountries(conf){
+  const grid=document.getElementById('cgrid');
+  const list=conf==='ALL'?COUNTRIES:COUNTRIES.filter(c=>c.confederation===conf);
+  grid.innerHTML=list.map((c,i)=>`
+    <div class="ccard" style="animation-delay:${i*20}ms">
+      <img class="cflag"
+        src="https://flagcdn.com/w80/${c.code}.png"
+        srcset="https://flagcdn.com/w160/${c.code}.png 2x"
+        alt="${c.name} flag" loading="lazy"
+        onerror="this.style.opacity='.3'"/>
+      <span class="cname">${c.name}</span>
+      <span class="cconf">${c.confederation}</span>
+    </div>`).join('');
+}
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    renderCountries(t.dataset.conf);
+  });
+});
+
+
+async function loadCount(){
+  try{
+    const r=await fetch('/api/entries/count');
+    const {count}=await r.json();
+    const el=document.getElementById('ecnt');
+    if(el) el.textContent=count===0?'Be the first to enter!':
+      `⚽ ${count} player${count!==1?'s':''} already signed up`;
+  }catch(e){
+    const el=document.getElementById('ecnt');
+    if(el) el.textContent='';
+  }
+}
+
+async function submitEntry(){
+  const name=document.getElementById('fname').value.trim();
+  const contact=document.getElementById('contact').value.trim();
+  const btn=document.getElementById('sbtn');
+  const btntxt=document.getElementById('btntxt');
+
+  if(!name){showToast('Please enter your full name.','err');document.getElementById('fname').focus();return}
+  if(!contact){showToast('Please enter your email or phone.','err');document.getElementById('contact').focus();return}
+
+  btn.disabled=true;
+  btntxt.textContent='Submitting…';
+
+  try{
+    const r=await fetch('/api/register',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({full_name:name,contact})
+    });
+    const data=await r.json();
+    if(r.ok&&data.success){
+      showToast("You're in! See you at the draw on June 6th 🏆",'ok');
+      document.getElementById('fname').value='';
+      document.getElementById('contact').value='';
+      await loadCount();
+      btntxt.textContent='✓ Registered!';
+      setTimeout(()=>{btntxt.textContent='Sign Me Up';btn.disabled=false;},5000);
+    }else{
+      showToast(data.error||'Something went wrong.','err');
+      btn.disabled=false;
+      btntxt.textContent='Sign Me Up';
+    }
+  }catch(e){
+    showToast('Network error. Please try again.','err');
+    btn.disabled=false;
+    btntxt.textContent='Sign Me Up';
+  }
+}
+
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast '+type+' show';
+  setTimeout(()=>{t.className='toast'},6000);
+}
+
+renderCountries('ALL');
+loadCount();
+</script>
+</body>
+</html>
