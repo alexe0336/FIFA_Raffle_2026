@@ -1,28 +1,8 @@
 const express = require('express');
-const fs = require('fs');
 const path = require('path');
-const { parse } = require('csv-parse/sync');
-const { stringify } = require('csv-stringify/sync');
 
 const app = express();
 const PORT = process.env.PORT || 3100;
-
-// Persistent data directory (Docker volume mount point)
-const DATA_DIR = process.env.DATA_DIR || '/data';
-const ENTRIES_FILE = path.join(DATA_DIR, 'entries.csv');
-const BUY_IN = 20; // Fixed buy-in amount
-
-// ── Ensure data directory and files exist ──────────────────────────────────
-function ensureDataFiles() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-
-  if (!fs.existsSync(ENTRIES_FILE)) {
-    fs.writeFileSync(ENTRIES_FILE, 'timestamp,full_name,contact,buy_in_vote\n');
-  }
-
-
-}
-ensureDataFiles();
 
 // ── Middleware ─────────────────────────────────────────────────────────────
 app.use(express.json());
@@ -97,47 +77,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok' }));
 // Countries list
 app.get('/api/countries', (req, res) => res.json(COUNTRIES));
 
-// Buy-in amount (fixed)
-app.get('/api/buyin', (req, res) => res.json({ amount: BUY_IN }));
-
-// Get entry count (no PII exposed)
-app.get('/api/entries/count', (req, res) => {
-  try {
-    const content = fs.readFileSync(ENTRIES_FILE, 'utf8').trim();
-    const lines = content.split('\n').filter(Boolean);
-    // subtract header row
-    const count = Math.max(0, lines.length - 1);
-    res.json({ count });
-  } catch {
-    res.json({ count: 0 });
-  }
-});
-
-// Submit registration
-app.post('/api/register', (req, res) => {
-  const { full_name, contact } = req.body;
-
-  if (!full_name || typeof full_name !== 'string' || full_name.trim().length < 2) {
-    return res.status(400).json({ error: 'Valid full name is required.' });
-  }
-  if (!contact || typeof contact !== 'string' || contact.trim().length < 3) {
-    return res.status(400).json({ error: 'Email or phone number is required.' });
-  }
-
-  const timestamp = new Date().toISOString();
-  const row = stringify([[timestamp, full_name.trim(), contact.trim(), BUY_IN]]);
-
-  try {
-    fs.appendFileSync(ENTRIES_FILE, row);
-    res.json({ success: true, message: "You're in! See you at the draw on June 6th 🏆" });
-  } catch (err) {
-    console.error('Write error:', err);
-    res.status(500).json({ error: 'Failed to save your entry. Please try again.' });
-  }
-});
-
 // ── Start ──────────────────────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`⚽  World Cup Raffle server running on port ${PORT}`);
-  console.log(`📂  Data directory: ${DATA_DIR}`);
+  console.log(`⚽  World Cup tracker server running on port ${PORT}`);
 });

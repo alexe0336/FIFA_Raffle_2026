@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>World Cup 2026 — Raffle</title>
+<title>World Cup 2026 — Raffle Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
@@ -144,28 +144,34 @@ section,header,footer{position:relative;z-index:1}
 .cname{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.03em;text-align:center;color:var(--text);line-height:1.3}
 .cconf{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-family:var(--fc)}
 
-/* ── REGISTER ── */
-.reg{border-top:1px solid var(--border);padding:80px 24px 120px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.06) 0%,rgba(77,159,255,.04) 60%,transparent 100%)}
-.reg-inner{max-width:680px;margin:0 auto}
-.reg-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-top:-24px;margin-bottom:40px;line-height:1.6}
-.reg-sub strong{color:var(--green)}
+/* ── KEY MATCHES ── */
+.kmgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.kmcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:6px;transition:border-color .2s}
+.kmcard:hover{border-color:var(--blue)}
+.km-label{font-family:var(--fc);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
+.km-matchup{font-family:var(--fd);font-size:24px;letter-spacing:.03em;color:var(--text)}
+.km-when{font-size:13px;color:var(--text-muted)}
+.km-venue{font-size:12px;color:var(--text-dim)}
 
-.fblock{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:32px;display:flex;flex-direction:column;gap:20px}
-.ffield{display:flex;flex-direction:column;gap:8px}
-.ffield label{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
-.ffield input{background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;color:var(--text);font-family:var(--fb);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
-.ffield input::placeholder{color:var(--text-dim)}
-.ffield input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow)}
-.ecnt{text-align:center;font-family:var(--fc);font-size:13px;color:var(--text-muted);letter-spacing:.06em}
-.sbtn{width:100%;padding:18px;background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);border:none;border-radius:var(--r);color:#000;font-family:var(--fc);font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s;box-shadow:0 4px 20px var(--green-glow)}
-.sbtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,217,106,.45)}
-.sbtn:active:not(:disabled){transform:scale(.98)}
-.sbtn:disabled{opacity:.5;cursor:not-allowed}
-.fnote{text-align:center;font-size:12px;color:var(--text-dim)}
-.toast{margin-top:16px;border-radius:var(--r);font-family:var(--fc);font-size:16px;letter-spacing:.04em;text-align:center;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s,opacity .3s;opacity:0}
-.toast.show{max-height:80px;padding:16px;opacity:1}
-.toast.ok{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green)}
-.toast.err{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}
+/* ── ASSIGNMENTS ── */
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.acard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
+.acard:hover{border-color:var(--green)}
+.a-name{font-family:var(--fc);font-weight:700;font-size:16px;letter-spacing:.06em;color:var(--text)}
+.a-teams{display:flex;flex-wrap:wrap;gap:6px}
+.a-team{font-size:12px;letter-spacing:.04em;background:var(--bg-card2);border:1px solid var(--border);border-radius:50px;padding:5px 12px;color:var(--text-muted)}
+.a-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:14px;line-height:1.7}
+
+/* ── BRACKET ── */
+.bracket-groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:48px}
+.bgroup{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+.bgroup h4{font-family:var(--fc);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
+.bgroup ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.bgroup li{font-size:13px;color:var(--text-muted);padding:6px 10px;background:var(--bg-card2);border-radius:6px}
+.bracket-rounds{display:flex;gap:18px;overflow-x:auto;padding-bottom:12px}
+.bround{display:flex;flex-direction:column;justify-content:space-around;gap:14px;min-width:170px;flex-shrink:0}
+.bround h4{font-family:var(--fc);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);text-align:center;margin-bottom:6px}
+.bmatch{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:.03em}
 
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:13px}
@@ -190,8 +196,8 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 <!-- ── HERO ── -->
 <header class="hero">
   <span class="trophy">🏆</span>
-  <div class="open-badge"><span class="pulse-dot"></span> Raffle Now Open</div>
-  <p class="eyebrow">48 Nations &middot; Random Draw &middot; 3 Prize Tiers</p>
+  <div class="open-badge"><span class="pulse-dot"></span> Tracking the 2026 Bracket</div>
+  <p class="eyebrow">48 Nations &middot; 104 Matches &middot; 3 Host Countries</p>
   <h1 class="hero-title">
     <span class="word">FIFA</span>
     <span class="word accent">WORLD CUP</span>
@@ -201,17 +207,17 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 
   <div class="cd-grid">
     <div class="cd-card hi">
-      <span class="cd-label">🎟 Raffle Draw</span>
-      <span class="cd-date">June 6, 2026</span>
-      <span class="cd-note">12:00 PM EST — Teams assigned live</span>
+      <span class="cd-label">🌍 Expected Global Viewership</span>
+      <span class="cd-date" id="viewership-stat">6 Billion+</span>
+      <span class="cd-note" id="viewership-note">FIFA projects this will be the most-watched sporting event in history</span>
     </div>
     <div class="cd-card blue-card">
-      <span class="cd-label">Tournament Begins</span>
-      <span class="cd-date">June 11, 2026</span>
-      <span class="cd-note">Group Stage Kicks Off</span>
+      <span class="cd-label">Tournament Window</span>
+      <span class="cd-date" id="tournament-dates">June 11 – July 19, 2026</span>
+      <span class="cd-note">Opening Match through the Final</span>
     </div>
   </div>
-  <a href="#register" class="hero-cta">Join the Raffle Now ↓</a>
+  <a href="#assignments" class="hero-cta">See Team Assignments ↓</a>
 </header>
 
 <!-- ── STADIUM IMAGE ── -->
@@ -229,14 +235,14 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 <!-- ── HOW THE RAFFLE WORKS ── -->
 <section class="raffle-sec" id="how-it-works">
   <h2 class="sec-title">How the Raffle Works</h2>
-  <p class="sec-sub">Sign up, get randomly assigned teams from the 48 nations, then root for your countries through the entire tournament. Three place tiers — bragging rights on the line.</p>
+  <p class="sec-sub">Each participant is randomly assigned teams from the 48 nations, then roots for their countries through the entire tournament. Three place tiers — bragging rights on the line.</p>
 
   <!-- Flow cards -->
   <div class="raffle-flow">
     <div class="rflow-card rfc-assign">
       <span class="rflow-icon">🎲</span>
       <h3>Random Team Assignment</h3>
-      <p>Once sign-ups close on June 6th at 12 PM EST, every participant is randomly teams/countries. The number of teams each player receives depends on how many people have entered — the more players, the fewer teams per person.</p>
+      <p>Every participant is randomly assigned teams/countries from the field of 48. The number of teams each player receives depends on how many people are in the raffle — the more players, the fewer teams per person.</p>
     </div>
     <div class="rflow-card rfc-1st">
       <span class="rflow-icon">🥇</span>
@@ -265,7 +271,7 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <div class="rules-box">
     <h3>⚖️ Key Rules</h3>
     <ul class="rules-list">
-      <li>Each player is randomly assigned an equal share of the 48 teams. Assignments happen June 6th draw at 12:00 PM EST.</li>
+      <li>Each player is randomly assigned an equal share of the 48 teams via the raffle draw.</li>
       <li>If a single player holds both the 1st and 2nd place finishers, only 1st place is awarded to them. 2nd place then goes to the player holding the highest FIFA-ranked team among all other players.</li>
       <li>3rd place goes to the team that wins the 3rd place match. If the winner of 3rd place also has a team that wins 1st or second place, only the higher placement counts. Third place then goes to the highest ranking team not assigned by 1st place or 2nd place winner.</li>
       <li>If you hold multiple finishers in the top three, only your best placement counts. Lower placements roll to the next eligible player.</li>
@@ -309,36 +315,31 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <div class="cgrid" id="cgrid"><div class="loading">Loading nations…</div></div>
 </section>
 
-<!-- ── REGISTER ── -->
-<section class="reg" id="register">
-  <div class="reg-inner">
-    <h2 class="sec-title">Join the Raffle</h2>
-    <p class="reg-sub">The raffle is <strong>open now</strong>. Sign up before June 6th at 12:00 PM EST. Teams are randomly assigned at the draw.</p>
+<!-- ── KEY MATCHES ── -->
+<section class="countries" id="key-matches">
+  <h2 class="sec-title">Big Games to Watch</h2>
+  <p class="sec-sub">A few of the marquee dates and times on the calendar — all times shown in Eastern (EST/EDT).</p>
+  <div class="kmgrid" id="kmgrid"><div class="loading">Loading schedule…</div></div>
+</section>
 
-    <!-- Form -->
-    <div class="fblock">
-      <div class="ffield">
-        <label for="fname">Full Name</label>
-        <input type="text" id="fname" placeholder="John Doe" autocomplete="name"/>
-      </div>
-      <div class="ffield">
-        <label for="contact">Email or Phone Number</label>
-        <input type="text" id="contact" placeholder="john@email.com  or  555-867-5309" autocomplete="email"/>
-      </div>
-      <div class="ecnt" id="ecnt">Checking current entries…</div>
-      <button class="sbtn" id="sbtn" onclick="submitEntry()">
-        <span id="btntxt">Sign Me Up</span>
-      </button>
-      <p class="fnote">⚽ Your info is stored securely and used only for raffle tracking.</p>
-    </div>
-    <div class="toast" id="toast"></div>
-  </div>
+<!-- ── TEAM ASSIGNMENTS ── -->
+<section class="countries" id="assignments">
+  <h2 class="sec-title">Team Assignments</h2>
+  <p class="sec-sub">Once the draw is complete, every participant's assigned countries will be listed here so everyone can track how their teams are doing.</p>
+  <div class="agrid" id="agrid"><div class="loading">Loading assignments…</div></div>
+</section>
+
+<!-- ── BRACKET ── -->
+<section class="countries" id="bracket">
+  <h2 class="sec-title">The Bracket</h2>
+  <p class="sec-sub">An empty look at the road to the Final — 12 groups of 4 funnel into a 32-team knockout bracket. We'll fill in results as the tournament unfolds.</p>
+  <div id="bracket-wrap"></div>
 </section>
 
 <!-- ── FOOTER ── -->
 <footer>
   <div class="fbadge">⚽ FIFA World Cup 2026</div>
-  <p>USA · Canada · Mexico · 48 Nations · Draw: June 6, 2026</p>
+  <p>USA · Canada · Mexico · 48 Nations · June 11 – July 19, 2026</p>
   <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px">
     <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12px">Official Tournament Info ↗</a>
     <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12px">Group Standings ↗</a>
@@ -424,66 +425,78 @@ document.querySelectorAll('.tab').forEach(t=>{
 });
 
 
-async function loadCount(){
-  try{
-    const r=await fetch('/api/entries/count');
-    const {count}=await r.json();
-    const el=document.getElementById('ecnt');
-    if(el) el.textContent=count===0?'Be the first to enter!':
-      `⚽ ${count} player${count!==1?'s':''} already signed up`;
-  }catch(e){
-    const el=document.getElementById('ecnt');
-    if(el) el.textContent='';
-  }
+function renderKeyMatches(matches){
+  const grid=document.getElementById('kmgrid');
+  if(!matches||!matches.length){grid.innerHTML='<div class="loading">Schedule coming soon…</div>';return}
+  grid.innerHTML=matches.map(m=>`
+    <div class="kmcard">
+      <span class="km-label">${m.label}</span>
+      <span class="km-matchup">${m.matchup}</span>
+      <span class="km-when">${m.date} &middot; ${m.time}</span>
+      <span class="km-venue">${m.venue}</span>
+    </div>`).join('');
 }
 
-async function submitEntry(){
-  const name=document.getElementById('fname').value.trim();
-  const contact=document.getElementById('contact').value.trim();
-  const btn=document.getElementById('sbtn');
-  const btntxt=document.getElementById('btntxt');
+function renderAssignments(list){
+  const grid=document.getElementById('agrid');
+  const real=(list||[]).filter(a=>a.participant&&a.participant!=='TBD'&&a.teams&&a.teams.length);
+  if(!real.length){
+    grid.innerHTML='<div class="a-empty">Assignments will appear here once the draw is complete and teams have been assigned to each participant.</div>';
+    return;
+  }
+  grid.innerHTML=real.map(a=>`
+    <div class="acard">
+      <span class="a-name">${a.participant}</span>
+      <div class="a-teams">${a.teams.map(t=>`<span class="a-team">${t}</span>`).join('')}</div>
+    </div>`).join('');
+}
 
-  if(!name){showToast('Please enter your full name.','err');document.getElementById('fname').focus();return}
-  if(!contact){showToast('Please enter your email or phone.','err');document.getElementById('contact').focus();return}
+function renderBracket(bracket){
+  const wrap=document.getElementById('bracket-wrap');
+  if(!bracket){wrap.innerHTML='';return}
 
-  btn.disabled=true;
-  btntxt.textContent='Submitting…';
+  const groupsHtml=`<div class="bracket-groups">${bracket.groups.map(g=>`
+    <div class="bgroup">
+      <h4>Group ${g.group}</h4>
+      <ul>${g.teams.map(t=>`<li>${t}</li>`).join('')}</ul>
+    </div>`).join('')}</div>`;
 
+  const roundOrder=['roundOf32','roundOf16','quarterfinals','semifinals','thirdPlace','final'];
+  const roundsHtml=`<div class="bracket-rounds">${roundOrder.map(key=>{
+    const r=bracket[key];
+    if(!r) return '';
+    const matches=Array.from({length:r.matches},()=>'<div class="bmatch">TBD vs TBD</div>').join('');
+    return `<div class="bround"><h4>${r.label}</h4>${matches}</div>`;
+  }).join('')}</div>`;
+
+  wrap.innerHTML=groupsHtml+roundsHtml;
+}
+
+async function loadTournamentData(){
   try{
-    const r=await fetch('/api/register',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({full_name:name,contact})
-    });
+    const r=await fetch('/data/tournament.json');
     const data=await r.json();
-    if(r.ok&&data.success){
-      showToast("You're in! See you at the draw on June 6th 🏆",'ok');
-      document.getElementById('fname').value='';
-      document.getElementById('contact').value='';
-      await loadCount();
-      btntxt.textContent='✓ Registered!';
-      setTimeout(()=>{btntxt.textContent='Sign Me Up';btn.disabled=false;},5000);
-    }else{
-      showToast(data.error||'Something went wrong.','err');
-      btn.disabled=false;
-      btntxt.textContent='Sign Me Up';
-    }
-  }catch(e){
-    showToast('Network error. Please try again.','err');
-    btn.disabled=false;
-    btntxt.textContent='Sign Me Up';
-  }
-}
 
-function showToast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg;
-  t.className='toast '+type+' show';
-  setTimeout(()=>{t.className='toast'},6000);
+    if(data.tournament){
+      const vs=document.getElementById('viewership-stat');
+      const vn=document.getElementById('viewership-note');
+      const td=document.getElementById('tournament-dates');
+      if(vs&&data.tournament.expectedViewership) vs.textContent=data.tournament.expectedViewership;
+      if(vn&&data.tournament.viewershipNote) vn.textContent=data.tournament.viewershipNote;
+      if(td&&data.tournament.startDate&&data.tournament.endDate) td.textContent=`${data.tournament.startDate} – ${data.tournament.endDate}`;
+    }
+
+    renderKeyMatches(data.keyMatches);
+    renderAssignments(data.assignments);
+    renderBracket(data.bracket);
+  }catch(e){
+    document.getElementById('kmgrid').innerHTML='<div class="loading">Unable to load schedule.</div>';
+    document.getElementById('agrid').innerHTML='<div class="loading">Unable to load assignments.</div>';
+  }
 }
 
 renderCountries('ALL');
-loadCount();
+loadTournamentData();
 </script>
 </body>
 </html>
