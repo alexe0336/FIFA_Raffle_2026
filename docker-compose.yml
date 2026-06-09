@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: worldcup_web
+    container_name: FIFA_Raffle_2026
     restart: unless-stopped
     ports:
       - "3100:80"
