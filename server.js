@@ -16,7 +16,7 @@ app.use(helmet({
       scriptSrc:  ["'self'"],
       styleSrc:   ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc:    ["'self'", 'https://fonts.gstatic.com'],
-      imgSrc:     ["'self'", 'https://flagcdn.com', 'https://images.unsplash.com', 'data:'],
+      imgSrc:     ["'self'"],
       connectSrc: ["'self'"],
     },
   },
@@ -28,7 +28,6 @@ app.use(function(req, res, next) {
   if (ALLOWED_ORIGIN && origin === ALLOWED_ORIGIN) {
     res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
     res.setHeader('Access-Control-Allow-Methods', 'GET');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();

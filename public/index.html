@@ -12,9 +12,9 @@
 :root{
   --bg:#0b1e36;--bg-card:#132d4f;--bg-card2:#1a3a62;
   --border:rgba(255,255,255,.10);--border-hi:rgba(255,255,255,.22);
-  --green:#00e676;--green-dark:#00c853;--green-glow:rgba(0,230,118,.22);
+  --green:#00e676;--green-dark:#00c853;
   --red:#ff4757;--red-dark:#e53935;
-  --blue:#4d9fff;--blue-dark:#2979ff;--blue-glow:rgba(77,159,255,.22);
+  --blue:#4d9fff;--blue-dark:#2979ff;
   --gold:#f0c040;--silver:#b0bec5;--bronze:#cd7f32;
   --text:#f0f6ff;--text-muted:#7a9cc0;--text-dim:#3d5a7a;
   --fd:'Bebas Neue',sans-serif;--fc:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;
@@ -56,15 +56,11 @@ section,header,footer,.draw-section{position:relative;z-index:1}
 .rfc-1st::before{background:linear-gradient(90deg,#c9a227,var(--gold))}
 .rfc-2nd::before{background:linear-gradient(90deg,#78909c,var(--silver))}
 .rfc-3rd::before{background:linear-gradient(90deg,#8d5524,var(--bronze))}
-.rfc-rule::before{background:linear-gradient(90deg,var(--red-dark),var(--red))}
 .rflow-icon{font-size:32px;display:block;margin-bottom:14px}
 .rflow-card h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.05em;margin-bottom:8px;color:var(--text)}
 .rflow-card p{font-size:14px;color:var(--text-muted);line-height:1.65}
 .rules-box{background:var(--bg-card);border:1px solid rgba(77,159,255,.35);border-radius:var(--rl);padding:28px 32px;margin-bottom:20px}
 .rules-box h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
-.rules-list{list-style:none;display:flex;flex-direction:column;gap:10px}
-.rules-list li{font-size:14px;color:var(--text-muted);line-height:1.6;padding-left:20px;position:relative}
-.rules-list li::before{content:'→';position:absolute;left:0;color:var(--blue);font-weight:700}
 
 /* ── FIFA LINKS ─────────────────────────────────────────── */
 .fifa-link-wrap{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
@@ -242,7 +238,6 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 @media(max-width:700px){
   .hero{padding:32px 16px 28px}
   .rules-box{padding:20px}
-  .fblock{padding:20px}
   #draw-section .rollstrip{grid-template-columns:repeat(3,1fr);}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
@@ -377,8 +372,8 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <div class="fbadge">⚽ FIFA World Cup 2026</div>
   <p>USA · Canada · Mexico · 48 Nations · June 11 – July 19, 2026</p>
   <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px">
-    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12px">Official Tournament Info ↗</a>
-    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings" target="_blank" rel="noopener" style="color:var(--text-muted);font-size:12px">Group Standings ↗</a>
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted);font-size:12px">Official Tournament Info ↗</a>
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/standings" target="_blank" rel="noopener noreferrer" style="color:var(--text-muted);font-size:12px">Group Standings ↗</a>
   </div>
   <p class="fsmall">For entertainment purposes. This raffle is operated independently and is not affiliated with FIFA.</p>
   <p class="madeby">Made with ⚽ by <span>Alex</span></p>
