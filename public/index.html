@@ -173,6 +173,28 @@ section,header,footer{position:relative;z-index:1}
 .bround h4{font-family:var(--fc);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);text-align:center;margin-bottom:6px}
 .bmatch{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:.03em}
 
+/* ── REGISTER ── */
+.reg{border-top:1px solid var(--border);padding:80px 24px 120px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.06) 0%,rgba(77,159,255,.04) 60%,transparent 100%)}
+.reg-inner{max-width:680px;margin:0 auto}
+.reg-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-top:-24px;margin-bottom:40px;line-height:1.6}
+.reg-sub strong{color:var(--green)}
+.fblock{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:32px;display:flex;flex-direction:column;gap:20px}
+.ffield{display:flex;flex-direction:column;gap:8px}
+.ffield label{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+.ffield input{background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;color:var(--text);font-family:var(--fb);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
+.ffield input::placeholder{color:var(--text-dim)}
+.ffield input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow)}
+.ecnt{text-align:center;font-family:var(--fc);font-size:13px;color:var(--text-muted);letter-spacing:.06em}
+.sbtn{width:100%;padding:18px;background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);border:none;border-radius:var(--r);color:#000;font-family:var(--fc);font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s;box-shadow:0 4px 20px var(--green-glow)}
+.sbtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,217,106,.45)}
+.sbtn:active:not(:disabled){transform:scale(.98)}
+.sbtn:disabled{opacity:.5;cursor:not-allowed}
+.fnote{text-align:center;font-size:12px;color:var(--text-dim)}
+.toast{margin-top:16px;border-radius:var(--r);font-family:var(--fc);font-size:16px;letter-spacing:.04em;text-align:center;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s,opacity .3s;opacity:0}
+.toast.show{max-height:80px;padding:16px;opacity:1}
+.toast.ok{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green)}
+.toast.err{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}
+
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:13px}
 .fbadge{font-family:var(--fd);font-size:22px;color:var(--text);letter-spacing:.08em;margin-bottom:4px}
@@ -342,6 +364,30 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <div id="bracket-wrap"></div>
 </section>
 
+<!-- ── REGISTER ── -->
+<section class="reg" id="register">
+  <div class="reg-inner">
+    <h2 class="sec-title">Join the Raffle</h2>
+    <p class="reg-sub">Sign up to be randomly assigned teams from the 48 nations. The raffle is <strong>open now</strong> — teams are assigned at the draw.</p>
+    <div class="fblock">
+      <div class="ffield">
+        <label for="fname">Full Name</label>
+        <input type="text" id="fname" placeholder="John Doe" autocomplete="name"/>
+      </div>
+      <div class="ffield">
+        <label for="contact">Email or Phone Number</label>
+        <input type="text" id="contact" placeholder="john@email.com  or  555-867-5309" autocomplete="email"/>
+      </div>
+      <div class="ecnt" id="ecnt">Checking current entries…</div>
+      <button class="sbtn" id="sbtn" onclick="submitEntry()">
+        <span id="btntxt">Sign Me Up</span>
+      </button>
+      <p class="fnote">⚽ Your info is stored securely and used only for raffle tracking.</p>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+</section>
+
 <!-- ── FOOTER ── -->
 <footer>
   <div class="fbadge">⚽ FIFA World Cup 2026</div>
@@ -501,8 +547,67 @@ async function loadTournamentData(){
   }
 }
 
+async function loadCount(){
+  try{
+    const r=await fetch('/api/entries/count');
+    const {count}=await r.json();
+    const el=document.getElementById('ecnt');
+    if(el) el.textContent=count===0?'Be the first to enter!':
+      `⚽ ${count} player${count!==1?'s':''} already signed up`;
+  }catch(e){
+    const el=document.getElementById('ecnt');
+    if(el) el.textContent='';
+  }
+}
+
+async function submitEntry(){
+  const name=document.getElementById('fname').value.trim();
+  const contact=document.getElementById('contact').value.trim();
+  const btn=document.getElementById('sbtn');
+  const btntxt=document.getElementById('btntxt');
+
+  if(!name){showToast('Please enter your full name.','err');document.getElementById('fname').focus();return}
+  if(!contact){showToast('Please enter your email or phone.','err');document.getElementById('contact').focus();return}
+
+  btn.disabled=true;
+  btntxt.textContent='Submitting…';
+
+  try{
+    const r=await fetch('/api/register',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({full_name:name,contact})
+    });
+    const data=await r.json();
+    if(r.ok&&data.success){
+      showToast("You're in! 🏆",'ok');
+      document.getElementById('fname').value='';
+      document.getElementById('contact').value='';
+      await loadCount();
+      btntxt.textContent='✓ Registered!';
+      setTimeout(()=>{btntxt.textContent='Sign Me Up';btn.disabled=false;},5000);
+    }else{
+      showToast(data.error||'Something went wrong.','err');
+      btn.disabled=false;
+      btntxt.textContent='Sign Me Up';
+    }
+  }catch(e){
+    showToast('Network error. Please try again.','err');
+    btn.disabled=false;
+    btntxt.textContent='Sign Me Up';
+  }
+}
+
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast '+type+' show';
+  setTimeout(()=>{t.className='toast'},6000);
+}
+
 renderCountries('ALL');
 loadTournamentData();
+loadCount();
 </script>
 </body>
 </html>
