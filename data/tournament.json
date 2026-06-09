@@ -1,47 +1,6 @@
 {
-  "tournament": {
-    "name": "FIFA World Cup 2026",
-    "startDate": "June 11, 2026",
-    "endDate": "July 19, 2026",
-    "hosts": "United States · Canada · Mexico",
-    "expectedViewership": "6 billion+",
-    "viewershipNote": "FIFA projects cumulative global viewership of over 6 billion people across the tournament — making it the most-watched sporting event in history."
-  },
-
-  "keyMatches": [
-    { "label": "Opening Match",      "matchup": "Mexico vs TBD",        "date": "June 11, 2026", "time": "4:00 PM EST", "venue": "Estadio Azteca — Mexico City, MX" },
-    { "label": "USA Opener",         "matchup": "United States vs TBD", "date": "June 12, 2026", "time": "8:00 PM EST", "venue": "AT&T Stadium — Arlington, TX" },
-    { "label": "Canada Opener",      "matchup": "Canada vs TBD",        "date": "June 12, 2026", "time": "5:00 PM EST", "venue": "BC Place — Vancouver, BC" },
-    { "label": "Round of 32 Begins", "matchup": "Knockout Stage Opens", "date": "June 28, 2026", "time": "TBD",          "venue": "Various Venues" },
-    { "label": "Final",              "matchup": "TBD vs TBD",           "date": "July 19, 2026", "time": "3:00 PM EST", "venue": "MetLife Stadium — East Rutherford, NJ" }
-  ],
-
-  "_assignmentsHelp": "Hand-edit this list after the raffle draw. Each entry maps a participant's name to the countries they were assigned.",
+  "_help": "After the draw, replace the assignments below with real participant names and their assigned teams. Team names must match exactly what you want displayed on the site.",
   "assignments": [
     { "participant": "TBD", "teams": [] }
-  ],
-
-  "_bracketHelp": "Hand-edit results as the tournament progresses. Leave 'team' fields as null/TBD until known.",
-  "bracket": {
-    "groups": [
-      { "group": "A", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "B", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "C", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "D", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "E", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "F", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "G", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "H", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "I", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "J", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "K", "teams": ["TBD", "TBD", "TBD", "TBD"] },
-      { "group": "L", "teams": ["TBD", "TBD", "TBD", "TBD"] }
-    ],
-    "roundOf32":   { "matches": 16, "label": "Round of 32" },
-    "roundOf16":   { "matches": 8,  "label": "Round of 16" },
-    "quarterfinals": { "matches": 4, "label": "Quarterfinals" },
-    "semifinals":  { "matches": 2,  "label": "Semifinals" },
-    "thirdPlace":  { "matches": 1,  "label": "Third Place Match" },
-    "final":       { "matches": 1,  "label": "Final" }
-  }
+  ]
 }
