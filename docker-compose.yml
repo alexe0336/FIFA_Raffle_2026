@@ -1,19 +1,9 @@
-# ═══════════════════════════════════════════════════════════════
-#  World Cup 2026 Raffle — Docker Compose
-# ═══════════════════════════════════════════════════════════════
-
 services:
-
   web:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: worldcup_web
     restart: unless-stopped
-    environment:
-      PORT: "3100"
-      NODE_ENV: "production"
-      # Set this to your public site URL to enforce CORS (e.g. https://yoursite.com)
-      ALLOWED_ORIGIN: "${ALLOWED_ORIGIN:-}"
     ports:
-      - "3100:3100"
+      - "3100:80"
