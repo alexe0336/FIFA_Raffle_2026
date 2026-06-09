@@ -6,7 +6,9 @@ services:
     container_name: worldcup_web
     restart: unless-stopped
     ports:
-      - "3100:8080"
+      # Bound to localhost only — the Cloudflare tunnel (cloudflared) connects
+      # here from the same machine. Nothing reaches nginx except through Cloudflare.
+      - "127.0.0.1:3100:8080"
     read_only: true
     tmpfs:
       - /tmp
