@@ -453,19 +453,34 @@ const COUNTRIES=[
   {name:'New Zealand',code:'nz',confederation:'OFC'},
 ];
 
+function esc(str){ const d=document.createElement('div'); d.textContent=str; return d.innerHTML; }
+
+function el(tag,cls,text){
+  const e=document.createElement(tag);
+  if(cls) e.className=cls;
+  if(text!=null) e.textContent=text;
+  return e;
+}
+
 function renderCountries(conf){
   const grid=document.getElementById('cgrid');
   const list=conf==='ALL'?COUNTRIES:COUNTRIES.filter(c=>c.confederation===conf);
-  grid.innerHTML=list.map((c,i)=>`
-    <div class="ccard" style="animation-delay:${i*20}ms">
-      <img class="cflag"
-        src="https://flagcdn.com/w80/${c.code}.png"
-        srcset="https://flagcdn.com/w160/${c.code}.png 2x"
-        alt="${c.name} flag" loading="lazy"
-        onerror="this.style.opacity='.3'"/>
-      <span class="cname">${c.name}</span>
-      <span class="cconf">${c.confederation}</span>
-    </div>`).join('');
+  grid.innerHTML='';
+  list.forEach((c,i)=>{
+    const card=el('div','ccard');
+    card.style.animationDelay=i*20+'ms';
+    const img=document.createElement('img');
+    img.className='cflag';
+    img.src=`https://flagcdn.com/w80/${c.code}.png`;
+    img.srcset=`https://flagcdn.com/w160/${c.code}.png 2x`;
+    img.alt=c.name+' flag';
+    img.loading='lazy';
+    img.onerror=function(){this.style.opacity='.3'};
+    card.appendChild(img);
+    card.appendChild(el('span','cname',c.name));
+    card.appendChild(el('span','cconf',c.confederation));
+    grid.appendChild(card);
+  });
 }
 
 document.querySelectorAll('.tab').forEach(t=>{
@@ -479,54 +494,68 @@ document.querySelectorAll('.tab').forEach(t=>{
 
 function renderKeyMatches(matches){
   const grid=document.getElementById('kmgrid');
-  if(!matches||!matches.length){grid.innerHTML='<div class="loading">Schedule coming soon…</div>';return}
-  grid.innerHTML=matches.map(m=>`
-    <div class="kmcard">
-      <span class="km-label">${m.label}</span>
-      <span class="km-matchup">${m.matchup}</span>
-      <span class="km-when">${m.date} &middot; ${m.time}</span>
-      <span class="km-venue">${m.venue}</span>
-    </div>`).join('');
+  grid.innerHTML='';
+  if(!matches||!matches.length){grid.appendChild(el('div','loading','Schedule coming soon…'));return}
+  matches.forEach(m=>{
+    const card=el('div','kmcard');
+    card.appendChild(el('span','km-label',m.label));
+    card.appendChild(el('span','km-matchup',m.matchup));
+    const when=el('span','km-when',m.date+' · '+m.time);
+    card.appendChild(when);
+    card.appendChild(el('span','km-venue',m.venue));
+    grid.appendChild(card);
+  });
 }
 
 function renderAssignments(list){
   const grid=document.getElementById('agrid');
+  grid.innerHTML='';
   const real=(list||[]).filter(a=>a.participant&&a.participant!=='TBD'&&a.teams&&a.teams.length);
   if(!real.length){
-    grid.innerHTML='<div class="a-empty">Assignments will appear here once the draw is complete and teams have been assigned to each participant.</div>';
+    grid.appendChild(el('div','a-empty','Assignments will appear here once the draw is complete and teams have been assigned to each participant.'));
     return;
   }
-  grid.innerHTML=real.map(a=>`
-    <div class="acard">
-      <span class="a-name">${a.participant}</span>
-      <div class="a-teams">${a.teams.map(t=>`<span class="a-team">${t}</span>`).join('')}</div>
-    </div>`).join('');
+  real.forEach(a=>{
+    const card=el('div','acard');
+    card.appendChild(el('span','a-name',a.participant));
+    const teams=el('div','a-teams');
+    a.teams.forEach(t=>teams.appendChild(el('span','a-team',t)));
+    card.appendChild(teams);
+    grid.appendChild(card);
+  });
 }
 
 function renderBracket(bracket){
   const wrap=document.getElementById('bracket-wrap');
-  if(!bracket){wrap.innerHTML='';return}
+  wrap.innerHTML='';
+  if(!bracket) return;
 
-  const groupsHtml=`<div class="bracket-groups">${bracket.groups.map(g=>`
-    <div class="bgroup">
-      <h4>Group ${g.group}</h4>
-      <ul>${g.teams.map(t=>`<li>${t}</li>`).join('')}</ul>
-    </div>`).join('')}</div>`;
+  const groupsDiv=el('div','bracket-groups');
+  bracket.groups.forEach(g=>{
+    const box=el('div','bgroup');
+    box.appendChild(el('h4',null,'Group '+g.group));
+    const ul=document.createElement('ul');
+    g.teams.forEach(t=>{const li=el('li',null,t);ul.appendChild(li);});
+    box.appendChild(ul);
+    groupsDiv.appendChild(box);
+  });
+  wrap.appendChild(groupsDiv);
 
-  const roundOrder=['roundOf32','roundOf16','quarterfinals','semifinals','thirdPlace','final'];
-  const roundsHtml=`<div class="bracket-rounds">${roundOrder.map(key=>{
+  const roundsDiv=el('div','bracket-rounds');
+  ['roundOf32','roundOf16','quarterfinals','semifinals','thirdPlace','final'].forEach(key=>{
     const r=bracket[key];
-    if(!r) return '';
-    const matches=Array.from({length:r.matches},()=>'<div class="bmatch">TBD vs TBD</div>').join('');
-    return `<div class="bround"><h4>${r.label}</h4>${matches}</div>`;
-  }).join('')}</div>`;
-
-  wrap.innerHTML=groupsHtml+roundsHtml;
+    if(!r) return;
+    const col=el('div','bround');
+    col.appendChild(el('h4',null,r.label));
+    for(let i=0;i<r.matches;i++) col.appendChild(el('div','bmatch','TBD vs TBD'));
+    roundsDiv.appendChild(col);
+  });
+  wrap.appendChild(roundsDiv);
 }
 
 async function loadTournamentData(){
   try{
-    const r=await fetch('/data/tournament.json');
+    const r=await fetch('/api/tournament');
     const data=await r.json();
 
     if(data.tournament){
@@ -535,15 +564,15 @@ async function loadTournamentData(){
       const td=document.getElementById('tournament-dates');
       if(vs&&data.tournament.expectedViewership) vs.textContent=data.tournament.expectedViewership;
       if(vn&&data.tournament.viewershipNote) vn.textContent=data.tournament.viewershipNote;
-      if(td&&data.tournament.startDate&&data.tournament.endDate) td.textContent=`${data.tournament.startDate} – ${data.tournament.endDate}`;
+      if(td&&data.tournament.startDate&&data.tournament.endDate) td.textContent=data.tournament.startDate+' – '+data.tournament.endDate;
     }
 
     renderKeyMatches(data.keyMatches);
     renderAssignments(data.assignments);
     renderBracket(data.bracket);
   }catch(e){
-    document.getElementById('kmgrid').innerHTML='<div class="loading">Unable to load schedule.</div>';
-    document.getElementById('agrid').innerHTML='<div class="loading">Unable to load assignments.</div>';
+    document.getElementById('kmgrid').textContent='Unable to load schedule.';
+    document.getElementById('agrid').textContent='Unable to load assignments.';
   }
 }
 

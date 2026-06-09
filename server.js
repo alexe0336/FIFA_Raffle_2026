@@ -1,8 +1,9 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { parse } = require('csv-parse/sync');
 const { stringify } = require('csv-stringify/sync');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 const PORT = process.env.PORT || 3100;
@@ -10,6 +11,12 @@ const PORT = process.env.PORT || 3100;
 const DATA_DIR = process.env.DATA_DIR || '/data';
 const ENTRIES_FILE = path.join(DATA_DIR, 'entries.csv');
 const BUY_IN = 20;
+
+// Input limits
+const MAX_NAME_LEN = 120;
+const MAX_CONTACT_LEN = 200;
+// Characters that trigger formula execution in spreadsheets
+const FORMULA_RE = /^[=+\-@\t\r]/;
 
 function ensureDataFiles() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -19,9 +26,32 @@ function ensureDataFiles() {
 }
 ensureDataFiles();
 
-// ── Middleware ─────────────────────────────────────────────────────────────
-app.use(express.json());
+// ── Security middleware ────────────────────────────────────────────────────
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc:  ["'self'", "'unsafe-inline'"],   // inline scripts in index.html
+      styleSrc:   ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc:    ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc:     ["'self'", 'https://flagcdn.com', 'https://images.unsplash.com', 'data:'],
+      connectSrc: ["'self'"],
+    },
+  },
+}));
+
+// ── General middleware ─────────────────────────────────────────────────────
+app.use(express.json({ limit: '4kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ── Rate limiter for registration ──────────────────────────────────────────
+const registerLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many sign-up attempts. Please try again in 15 minutes.' },
+});
 
 // ── 2026 World Cup Countries (48 teams) ───────────────────────────────────
 const COUNTRIES = [
@@ -86,14 +116,23 @@ const COUNTRIES = [
 
 // ── Routes ─────────────────────────────────────────────────────────────────
 
-// Health check
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-// Countries list
 app.get('/api/countries', (req, res) => res.json(COUNTRIES));
 
-// Buy-in amount
 app.get('/api/buyin', (req, res) => res.json({ amount: BUY_IN }));
+
+// Tournament data served through API so it is never a raw public static file
+app.get('/api/tournament', (req, res) => {
+  try {
+    const data = fs.readFileSync(
+      path.join(__dirname, 'data', 'tournament.json'), 'utf8'
+    );
+    res.type('application/json').send(data);
+  } catch {
+    res.status(500).json({ error: 'Tournament data unavailable.' });
+  }
+});
 
 // Entry count (no PII exposed)
 app.get('/api/entries/count', (req, res) => {
@@ -106,22 +145,40 @@ app.get('/api/entries/count', (req, res) => {
   }
 });
 
-// Submit registration
-app.post('/api/register', (req, res) => {
+// Submit registration — rate-limited
+app.post('/api/register', registerLimiter, (req, res) => {
   const { full_name, contact } = req.body;
-  if (!full_name || typeof full_name !== 'string' || full_name.trim().length < 2)
-    return res.status(400).json({ error: 'Valid full name is required.' });
-  if (!contact || typeof contact !== 'string' || contact.trim().length < 3)
-    return res.status(400).json({ error: 'Email or phone number is required.' });
 
-  const row = stringify([[new Date().toISOString(), full_name.trim(), contact.trim(), BUY_IN]]);
-  try {
-    fs.appendFileSync(ENTRIES_FILE, row);
-    res.json({ success: true, message: "You're in! 🏆" });
-  } catch (err) {
-    console.error('Write error:', err);
-    res.status(500).json({ error: 'Failed to save your entry. Please try again.' });
+  if (!full_name || typeof full_name !== 'string') {
+    return res.status(400).json({ error: 'Valid full name is required.' });
   }
+  if (!contact || typeof contact !== 'string') {
+    return res.status(400).json({ error: 'Email or phone number is required.' });
+  }
+
+  const name = full_name.trim();
+  const info = contact.trim();
+
+  if (name.length < 2)   return res.status(400).json({ error: 'Full name is too short.' });
+  if (name.length > MAX_NAME_LEN)
+    return res.status(400).json({ error: `Name must be ${MAX_NAME_LEN} characters or fewer.` });
+  if (info.length < 3)   return res.status(400).json({ error: 'Contact info is too short.' });
+  if (info.length > MAX_CONTACT_LEN)
+    return res.status(400).json({ error: `Contact info must be ${MAX_CONTACT_LEN} characters or fewer.` });
+
+  // Block spreadsheet formula injection
+  if (FORMULA_RE.test(name) || FORMULA_RE.test(info)) {
+    return res.status(400).json({ error: 'Invalid characters in submission.' });
+  }
+
+  const row = stringify([[new Date().toISOString(), name, info, BUY_IN]]);
+  fs.appendFile(ENTRIES_FILE, row, (err) => {
+    if (err) {
+      console.error('Write error:', err);
+      return res.status(500).json({ error: 'Failed to save your entry. Please try again.' });
+    }
+    res.json({ success: true, message: "You're in! 🏆" });
+  });
 });
 
 // ── Start ──────────────────────────────────────────────────────────────────
