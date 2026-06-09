@@ -87,7 +87,7 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 #draw-section{
   --d-pitch:#0a1f17;--d-pitch-2:#0d2a1e;--d-line:#1d4533;--d-line-soft:#163427;
   --d-chalk:#eef4ef;--d-chalk-dim:#8fb3a1;--d-gold:#f2c14e;--d-gold-deep:#c9971f;
-  --d-live:#e6492d;--d-ink:#06140e;
+  --d-ink:#06140e;
   background:
     radial-gradient(120% 80% at 50% -10%,#11342450 0%,transparent 60%),
     repeating-linear-gradient(90deg,var(--d-pitch) 0 64px,var(--d-pitch-2) 64px 128px),
@@ -145,15 +145,8 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   display:flex;align-items:center;gap:14px;padding:12px 16px;
   font-family:"IBM Plex Mono",monospace;
 }
-#draw-section .ticker .d-badge{
-  background:var(--d-live);color:#fff;font-size:10px;font-weight:600;
-  letter-spacing:.18em;padding:4px 8px;border-radius:5px;text-transform:uppercase;
-  animation:dpulse 1.4s infinite;flex:none;
-}
-#draw-section .ticker.idle .d-badge{background:var(--d-line);animation:none;}
 #draw-section .ticker .d-msg{font-size:14px;color:var(--d-chalk);line-height:1.3;}
 #draw-section .ticker .d-msg b{color:var(--d-gold);}
-@keyframes dpulse{0%,100%{opacity:1}50%{opacity:.45}}
 #draw-section .d-layout{
   display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:24px;
 }

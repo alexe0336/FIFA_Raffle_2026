@@ -78,11 +78,8 @@ function renderShell(){
   document.getElementById("picksdone").textContent="0 / 48 picks";
 }
 
-function setTicker(html,live){
+function setTicker(html){
   document.getElementById("msg").innerHTML=html;
-  const t=document.getElementById("ticker"),b=document.getElementById("badge");
-  if(live){t.classList.remove("idle");b.textContent="Live";}
-  else{t.classList.add("idle");b.textContent="Done";}
 }
 
 function applyStep(s){
@@ -91,10 +88,10 @@ function applyStep(s){
     document.getElementById("rl-"+s.name).textContent=s.rolls.length>1?"rolled "+s.rolls.join(","):"clean";
     document.getElementById("rc-"+s.name).classList.add("done");
     document.getElementById("slot-"+s.name).textContent=s.slot;
-    setTicker(`<b>${s.name}</b> rolled ${s.rolls.join(", ")} → slot <b>${s.slot}</b>.`,true);
+    setTicker(`<b>${s.name}</b> rolled ${s.rolls.join(", ")} → slot <b>${s.slot}</b>.`);
   } else if(s.type==="order"){
     const ord=[...NAMES].sort((a,b)=>slotOf[a]-slotOf[b]).map(n=>slotOf[n]+". "+n).join("  ·  ");
-    setTicker(`Pick order locked → ${ord}. Now the draw begins.`,true);
+    setTicker(`Pick order locked → ${ord}. Now the draw begins.`);
     const ros=document.getElementById("rosters");
     [...NAMES].sort((a,b)=>slotOf[a]-slotOf[b]).forEach(n=>ros.appendChild(document.getElementById("ros-"+n)));
   } else if(s.type==="pick"){
@@ -123,7 +120,7 @@ function applyStep(s){
     document.getElementById("potsleft").textContent=totalLeft+" teams left";
     const done=plan.slice(0,idx+1).filter(p=>p.type==="pick").length;
     document.getElementById("picksdone").textContent=done+" / 48 picks";
-    setTicker(`Round ${s.round} · <b>${s.name}</b> (slot ${s.slot}) draws from Group <b>${s.group}</b> [${s.top} left] → <b>${s.team}</b>.`,true);
+    setTicker(`Round ${s.round} · <b>${s.name}</b> (slot ${s.slot}) draws from Group <b>${s.group}</b> [${s.top} left] → <b>${s.team}</b>.`);
   }
 }
 
@@ -138,7 +135,7 @@ function finish(){
   document.querySelectorAll(`${DS} .pot.active`).forEach(e=>e.classList.remove("active"));
   document.querySelectorAll(`${DS} .ros.turn`).forEach(e=>e.classList.remove("turn"));
   document.querySelectorAll(`${DS} .chip.new`).forEach(c=>c.classList.remove("new"));
-  setTicker("Draw complete — all 48 teams assigned, 8 per manager.",false);
+  setTicker("Draw complete — all 48 teams assigned, 8 per manager.");
   document.getElementById("play").disabled=false;
   document.getElementById("play").textContent="▶ Watch the draw";
   document.getElementById("step").disabled=true;
