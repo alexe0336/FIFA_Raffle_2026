@@ -20,6 +20,9 @@ COPY --from=deps /app/node_modules ./node_modules
 # Copy application source
 COPY server.js ./
 COPY public/   ./public/
+# Copy tournament data as root and lock it read-only so the app process cannot modify it
+COPY --chown=root:root data/ ./data/
+RUN chmod -R 444 ./data/
 
 # Persistent data volume mount point
 # (actual volume is declared in docker-compose.yml)
