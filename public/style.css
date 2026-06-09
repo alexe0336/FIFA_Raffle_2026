@@ -51,6 +51,7 @@ section,header,footer{position:relative;z-index:1}
 .rflow-card p{font-size:14px;color:var(--text-muted);line-height:1.65}
 .rules-box{background:var(--bg-card);border:1px solid rgba(77,159,255,.35);border-radius:var(--rl);padding:28px 32px;margin-bottom:20px}
 .rules-box h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+.rules-intro{font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px}
 
 /* ── FIFA LINKS ─────────────────────────────────────────── */
 .fifa-link-wrap{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
@@ -79,6 +80,8 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 .fsmall{font-size:11px;color:var(--text-dim);margin-top:4px}
 .madeby{font-family:var(--fc);font-size:12px;color:var(--text-dim);letter-spacing:.08em}
 .madeby span{color:var(--red)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:4px}
+.footer-links a{color:var(--text-muted);font-size:12px}
 
 /* ── DRAW SECTION (scoped) ──────────────────────────────── */
 #draw-section{
