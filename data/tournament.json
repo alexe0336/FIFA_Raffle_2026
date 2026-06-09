@@ -1,6 +1,0 @@
-{
-  "_help": "After the draw, replace the assignments below with real participant names and their assigned teams. Team names must match exactly what you want displayed on the site.",
-  "assignments": [
-    { "participant": "TBD", "teams": [] }
-  ]
-}
