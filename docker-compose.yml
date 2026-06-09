@@ -5,15 +5,28 @@ services:
       dockerfile: Dockerfile
     container_name: worldcup_web
     restart: unless-stopped
-    ports:
-      # Bound to localhost only — the Cloudflare tunnel (cloudflared) connects
-      # here from the same machine. Nothing reaches nginx except through Cloudflare.
-      - "127.0.0.1:3100:8080"
+    # No host port published. The cloudflared service reaches this container
+    # privately over the internal compose network at http://web:8080, so
+    # nothing is exposed on the host at all — Cloudflare is the only way in.
     read_only: true
     tmpfs:
       - /tmp
       - /var/cache/nginx
       - /var/run
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    pids_limit: 100
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    # Token is read from a .env file (TUNNEL_TOKEN=...) next to this file.
+    # Never commit that file — it is gitignored.
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    depends_on:
+      - web
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
     mem_limit: 128m
