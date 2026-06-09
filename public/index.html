@@ -6,8 +6,9 @@
 <title>FIFA World Cup 2026 — Raffle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&family=Archivo:wght@500;600;700;800&family=Archivo+Narrow:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
+/* ── SITE VARIABLES & RESET ─────────────────────────────── */
 :root{
   --bg:#0b1e36;--bg-card:#132d4f;--bg-card2:#1a3a62;
   --border:rgba(255,255,255,.10);--border-hi:rgba(255,255,255,.22);
@@ -29,25 +30,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hid
 .o3{width:450px;height:450px;background:var(--red-dark);bottom:10%;left:20%;animation-delay:-12s}
 @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.08)}}
 .grid-lines{position:fixed;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.015) 79px,rgba(255,255,255,.015) 80px);pointer-events:none;z-index:0}
-section,header,footer{position:relative;z-index:1}
+section,header,footer,.draw-section{position:relative;z-index:1}
 
-/* ── HERO ── */
-.hero{text-align:center;padding:80px 24px 72px;max-width:900px;margin:0 auto}
-.trophy{font-size:72px;display:block;margin-bottom:16px;animation:tp 3s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(240,192,64,.3))}
+/* ── HERO (compact) ─────────────────────────────────────── */
+.hero{text-align:center;padding:44px 24px 36px;max-width:900px;margin:0 auto}
+.trophy{font-size:48px;display:block;margin-bottom:10px;animation:tp 3s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(240,192,64,.3))}
 @keyframes tp{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
-.eyebrow{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.35em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
-.hero-title{font-family:var(--fd);font-size:clamp(64px,12vw,140px);line-height:.92;letter-spacing:.02em;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+.eyebrow{font-family:var(--fc);font-weight:600;font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.hero-title{font-family:var(--fd);font-size:clamp(42px,8vw,88px);line-height:.92;letter-spacing:.02em;margin-bottom:10px;display:flex;flex-direction:column;align-items:center}
 .hero-title .word{display:block}
 .hero-title .accent{background:linear-gradient(135deg,var(--red) 0%,var(--blue) 50%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-family:var(--fc);font-weight:300;font-size:18px;letter-spacing:.4em;color:var(--text-muted);text-transform:uppercase;margin-bottom:40px}
-.hero-cta{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#000;font-family:var(--fc);font-weight:700;font-size:16px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:50px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px var(--green-glow)}
-.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,230,118,.45)}
+.hero-sub{font-family:var(--fc);font-weight:300;font-size:15px;letter-spacing:.35em;color:var(--text-muted);text-transform:uppercase}
 
-/* ── SECTION TITLES ── */
+/* ── SECTION TITLES ─────────────────────────────────────── */
 .sec-title{font-family:var(--fd);font-size:clamp(36px,6vw,72px);letter-spacing:.04em;text-align:center;margin-bottom:12px}
 .sec-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-bottom:40px;max-width:620px;margin-left:auto;margin-right:auto;line-height:1.6}
 
-/* ── HOW RAFFLE WORKS ── */
+/* ── HOW RAFFLE WORKS ───────────────────────────────────── */
 .raffle-sec{max-width:1040px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
 .raffle-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:56px}
 .rflow-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:26px 22px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
@@ -61,22 +60,20 @@ section,header,footer{position:relative;z-index:1}
 .rflow-icon{font-size:32px;display:block;margin-bottom:14px}
 .rflow-card h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.05em;margin-bottom:8px;color:var(--text)}
 .rflow-card p{font-size:14px;color:var(--text-muted);line-height:1.65}
-
-/* ── RULES BOX ── */
 .rules-box{background:var(--bg-card);border:1px solid rgba(77,159,255,.35);border-radius:var(--rl);padding:28px 32px;margin-bottom:20px}
 .rules-box h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
 .rules-list{list-style:none;display:flex;flex-direction:column;gap:10px}
 .rules-list li{font-size:14px;color:var(--text-muted);line-height:1.6;padding-left:20px;position:relative}
 .rules-list li::before{content:'→';position:absolute;left:0;color:var(--blue);font-weight:700}
 
-/* ── FIFA LINKS ── */
+/* ── FIFA LINKS ─────────────────────────────────────────── */
 .fifa-link-wrap{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 .fifa-link{display:inline-flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:12px 28px;color:var(--text);text-decoration:none;font-family:var(--fc);font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;transition:all .2s}
 .fifa-link:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
 .fifa-link svg{width:18px;height:18px;opacity:.6;transition:opacity .2s}
 .fifa-link:hover svg{opacity:1}
 
-/* ── ASSIGNMENTS ── */
+/* ── ASSIGNMENTS ────────────────────────────────────────── */
 .assign-sec{max-width:1200px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
 .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .acard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
@@ -86,7 +83,7 @@ section,header,footer{position:relative;z-index:1}
 .a-team{font-size:12px;letter-spacing:.04em;background:var(--bg-card2);border:1px solid var(--border);border-radius:50px;padding:5px 12px;color:var(--text-muted)}
 .a-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:14px;line-height:1.7}
 
-/* ── REGISTER ── */
+/* ── REGISTER ───────────────────────────────────────────── */
 .reg{border-top:1px solid var(--border);padding:80px 24px 120px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.06) 0%,rgba(77,159,255,.04) 60%,transparent 100%)}
 .reg-inner{max-width:680px;margin:0 auto}
 .reg-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-top:-24px;margin-bottom:40px;line-height:1.6}
@@ -108,18 +105,165 @@ section,header,footer{position:relative;z-index:1}
 .toast.ok{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green)}
 .toast.err{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}
 
-/* ── FOOTER ── */
+/* ── FOOTER ─────────────────────────────────────────────── */
 footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:13px}
 .fbadge{font-family:var(--fd);font-size:22px;color:var(--text);letter-spacing:.08em;margin-bottom:4px}
 .fsmall{font-size:11px;color:var(--text-dim);margin-top:4px}
 .madeby{font-family:var(--fc);font-size:12px;color:var(--text-dim);letter-spacing:.08em}
 .madeby span{color:var(--red)}
 
+/* ── DRAW SECTION (scoped) ──────────────────────────────── */
+#draw-section{
+  --d-pitch:#0a1f17;--d-pitch-2:#0d2a1e;--d-line:#1d4533;--d-line-soft:#163427;
+  --d-chalk:#eef4ef;--d-chalk-dim:#8fb3a1;--d-gold:#f2c14e;--d-gold-deep:#c9971f;
+  --d-live:#e6492d;--d-ink:#06140e;
+  background:
+    radial-gradient(120% 80% at 50% -10%,#11342450 0%,transparent 60%),
+    repeating-linear-gradient(90deg,var(--d-pitch) 0 64px,var(--d-pitch-2) 64px 128px),
+    var(--d-pitch);
+  color:var(--d-chalk);
+  font-family:"Archivo Narrow",system-ui,sans-serif;
+  padding:40px 18px 48px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+#draw-section *{box-sizing:border-box;}
+#draw-section .d-wrap{max-width:1040px;margin:0 auto;}
+#draw-section .board{
+  border:1px solid var(--d-line);border-radius:14px;
+  background:linear-gradient(180deg,#0e2c20,#0a2117);
+  padding:22px 26px;position:relative;overflow:hidden;
+}
+#draw-section .board::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--d-gold),transparent);opacity:.7;
+}
+#draw-section .d-eyebrow{
+  font-family:"IBM Plex Mono",monospace;letter-spacing:.34em;text-transform:uppercase;
+  font-size:11px;color:var(--d-gold);margin:0 0 8px;
+}
+#draw-section .d-title{
+  font-family:"Archivo",sans-serif;font-weight:800;
+  font-size:clamp(30px,6vw,52px);line-height:.96;margin:0;
+  letter-spacing:-.02em;text-transform:uppercase;color:var(--d-chalk);
+}
+#draw-section .d-title .thin{color:var(--d-chalk-dim);font-weight:600;}
+#draw-section .d-sub{margin:12px 0 0;color:var(--d-chalk-dim);font-size:15px;max-width:62ch;}
+#draw-section .controls{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 6px;
+}
+#draw-section button{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--d-ink);background:var(--d-gold);
+  border:none;border-radius:8px;padding:11px 16px;cursor:pointer;
+  transition:transform .08s ease,background .15s ease,opacity .15s;
+}
+#draw-section button.ghost{background:transparent;color:var(--d-chalk);border:1px solid var(--d-line);}
+#draw-section button:hover{transform:translateY(-1px);}
+#draw-section button:active{transform:translateY(0);}
+#draw-section button:disabled{opacity:.35;cursor:default;transform:none;}
+#draw-section .speed{
+  margin-left:auto;display:flex;align-items:center;gap:8px;
+  color:var(--d-chalk-dim);font-family:"IBM Plex Mono",monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+}
+#draw-section .speed input{accent-color:var(--d-gold);}
+#draw-section .ticker{
+  margin-top:14px;border:1px solid var(--d-line);border-radius:10px;
+  background:#081b13;min-height:52px;
+  display:flex;align-items:center;gap:14px;padding:12px 16px;
+  font-family:"IBM Plex Mono",monospace;
+}
+#draw-section .ticker .d-badge{
+  background:var(--d-live);color:#fff;font-size:10px;font-weight:600;
+  letter-spacing:.18em;padding:4px 8px;border-radius:5px;text-transform:uppercase;
+  animation:dpulse 1.4s infinite;flex:none;
+}
+#draw-section .ticker.idle .d-badge{background:var(--d-line);animation:none;}
+#draw-section .ticker .d-msg{font-size:14px;color:var(--d-chalk);line-height:1.3;}
+#draw-section .ticker .d-msg b{color:var(--d-gold);}
+@keyframes dpulse{0%,100%{opacity:1}50%{opacity:.45}}
+#draw-section .d-layout{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:24px;
+}
+@media(max-width:860px){#draw-section .d-layout{grid-template-columns:1fr;}}
+#draw-section .panel-title{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--d-chalk-dim);margin:0 0 12px;
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+#draw-section .panel-title span{color:var(--d-gold);}
+#draw-section .pots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:520px){#draw-section .pots{grid-template-columns:repeat(3,1fr);}}
+#draw-section .pot{
+  border:1px solid var(--d-line);border-radius:10px;background:#0b2418;
+  padding:10px 8px;min-height:118px;display:flex;flex-direction:column;
+  transition:border-color .3s,opacity .4s;
+}
+#draw-section .pot .ph{
+  font-family:"Archivo",sans-serif;font-weight:700;font-size:13px;
+  display:flex;justify-content:space-between;align-items:center;
+  color:var(--d-chalk);margin-bottom:8px;
+}
+#draw-section .pot .ct{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--d-gold);}
+#draw-section .pot.empty{opacity:.32;border-style:dashed;}
+#draw-section .pot.active{border-color:var(--d-gold);box-shadow:0 0 0 1px var(--d-gold),0 0 18px #f2c14e44;}
+#draw-section .d-team{
+  font-size:12px;line-height:1.5;color:var(--d-chalk-dim);
+  padding:2px 0;border-bottom:1px dashed var(--d-line-soft);
+  transition:opacity .35s,transform .35s;
+}
+#draw-section .d-team:last-child{border-bottom:none;}
+#draw-section .d-team.gone{opacity:0;transform:translateX(8px);height:0;padding:0;overflow:hidden;border:none;}
+#draw-section .d-team.flash{color:var(--d-gold);font-weight:600;}
+#draw-section .rosters{display:flex;flex-direction:column;gap:10px;}
+#draw-section .ros{
+  border:1px solid var(--d-line);border-radius:10px;background:#0b2418;
+  padding:10px 13px;transition:border-color .25s,box-shadow .25s;
+}
+#draw-section .ros.turn{border-color:var(--d-gold);box-shadow:0 0 0 1px var(--d-gold);}
+#draw-section .ros .rh{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+#draw-section .d-slot{
+  width:26px;height:26px;border-radius:6px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Archivo",sans-serif;font-weight:800;font-size:13px;
+  background:var(--d-gold);color:var(--d-ink);
+}
+#draw-section .nm{font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;letter-spacing:.01em;color:var(--d-chalk);}
+#draw-section .cnt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--d-chalk-dim);}
+#draw-section .chips{display:flex;flex-wrap:wrap;gap:5px;min-height:8px;}
+#draw-section .chip{
+  font-size:11px;font-family:"IBM Plex Mono",monospace;
+  background:#10342450;border:1px solid var(--d-line);color:var(--d-chalk);
+  padding:3px 8px;border-radius:999px;animation:ddrop .4s ease;
+}
+#draw-section .chip.new{background:var(--d-gold);color:var(--d-ink);border-color:var(--d-gold-deep);}
+@keyframes ddrop{from{opacity:0;transform:translateY(-6px) scale(.9);}to{opacity:1;transform:none;}}
+#draw-section .rollstrip{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px;
+}
+#draw-section .rc{
+  border:1px solid var(--d-line);border-radius:8px;background:#0b2418;
+  padding:8px 6px;text-align:center;transition:border-color .25s;
+}
+#draw-section .rc .rname{font-family:"Archivo",sans-serif;font-weight:600;font-size:12px;color:var(--d-chalk);}
+#draw-section .rc .rdie{
+  font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;
+  color:var(--d-gold);margin-top:2px;min-height:26px;
+}
+#draw-section .rc .rrolls{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--d-chalk-dim);margin-top:2px;min-height:13px;}
+#draw-section .rc.done{border-color:var(--d-gold);}
+#draw-section .draw-footer{
+  margin-top:30px;text-align:center;color:var(--d-chalk-dim);
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+}
 @media(max-width:700px){
-  .hero{padding:60px 16px 60px}
+  .hero{padding:32px 16px 28px}
   .rules-box{padding:20px}
   .fblock{padding:20px}
+  #draw-section .rollstrip{grid-template-columns:repeat(3,1fr);}
 }
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 </head>
 <body>
@@ -129,7 +273,7 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 <div class="orb o3"></div>
 <div class="grid-lines"></div>
 
-<!-- ── HERO ── -->
+<!-- ── HERO (compact) ── -->
 <header class="hero">
   <span class="trophy">🏆</span>
   <p class="eyebrow">48 Nations &middot; 104 Matches &middot; 3 Host Countries</p>
@@ -139,8 +283,48 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
     <span class="word">2026</span>
   </h1>
   <p class="hero-sub">USA &middot; CANADA &middot; MEXICO &middot; June 11 – July 19</p>
-  <a href="#register" class="hero-cta">Join the Raffle ↓</a>
 </header>
+
+<!-- ── THE DRAW ── -->
+<div id="draw-section">
+  <div class="d-wrap">
+
+    <div class="board">
+      <p class="d-eyebrow">Group stage &middot; 48 teams &middot; 12 groups</p>
+      <h2 class="d-title">The Draw <span class="thin">/ how the teams were picked</span></h2>
+      <p class="d-sub">Six managers earn a pick slot by rolling a die, then take turns drawing teams. Each pick pulls from the fullest groups first, draining every group evenly before moving down — so no group is gutted before another is touched.</p>
+
+      <div class="controls">
+        <button id="play">&#9654; Run the draw</button>
+        <button id="step" class="ghost">Step &rsaquo;</button>
+        <button id="reset" class="ghost">Replay</button>
+        <label class="speed">Speed
+          <input type="range" id="spd" min="1" max="5" value="3"/>
+        </label>
+      </div>
+
+      <div class="ticker idle" id="ticker">
+        <span class="d-badge" id="badge">Ready</span>
+        <span class="d-msg" id="msg">Press <b>Run the draw</b> to begin. Phase one: roll for pick order.</span>
+      </div>
+
+      <div class="rollstrip" id="rollstrip"></div>
+    </div>
+
+    <div class="d-layout">
+      <section>
+        <p class="panel-title">The groups <span id="potsleft">48 teams left</span></p>
+        <div class="pots" id="pots"></div>
+      </section>
+      <section>
+        <p class="panel-title">Rosters <span id="picksdone">0 / 48 picks</span></p>
+        <div class="rosters" id="rosters"></div>
+      </section>
+    </div>
+
+    <div class="draw-footer">Reproducible draw &middot; highest-group-first &middot; random tie-break</div>
+  </div>
+</div>
 
 <!-- ── HOW THE RAFFLE WORKS ── -->
 <section class="raffle-sec" id="how-it-works">
@@ -241,5 +425,176 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 </footer>
 
 <script src="/app.js"></script>
+<script>
+/* ── THE DRAW ───────────────────────────────────────────── */
+const NAMES = ["Alex","Althea","Felipe","Jeremiah","Justin","Sean"];
+const GROUPS = {
+  A:["Mexico","South Africa","South Korea","Czechia"],
+  B:["Canada","Bosnia-Herzegovina","Qatar","Switzerland"],
+  C:["Brazil","Morocco","Haiti","Scotland"],
+  D:["United States","Paraguay","Australia","Türkiye"],
+  E:["Germany","Curacao","Ivory Coast","Ecuador"],
+  F:["Netherlands","Japan","Sweden","Tunisia"],
+  G:["Belgium","Egypt","Iran","New Zealand"],
+  H:["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+  I:["France","Senegal","Iraq","Norway"],
+  J:["Argentina","Algeria","Austria","Jordan"],
+  K:["Portugal","Congo DR","Uzbekistan","Colombia"],
+  L:["England","Croatia","Ghana","Panama"]
+};
+const LETTERS = Object.keys(GROUPS);
+const PICKS_PER_PERSON = 8;
+
+const SEED = 20260608;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var rng=mulberry32(SEED);
+var rint=function(n){return Math.floor(rng()*n);};
+var choice=function(arr){return arr[rint(arr.length)];};
+
+var slotOf={},order=[],plan=[],idx=0,timer=null,playing=false;
+
+function buildPlan(){
+  rng=mulberry32(SEED);
+  slotOf={};order=[];plan=[];idx=0;
+  var rosters={};
+  NAMES.forEach(function(n){rosters[n]=[];});
+  var rem={};
+  LETTERS.forEach(function(g){rem[g]=[].concat(GROUPS[g]);});
+
+  var taken=new Set();
+  NAMES.forEach(function(name){
+    var rolls=[],r;
+    do{r=1+rint(6);rolls.push(r);}while(taken.has(r));
+    taken.add(r);slotOf[name]=r;
+    plan.push({type:"roll",name:name,rolls:rolls.slice(),slot:r});
+  });
+  order=NAMES.slice().sort(function(a,b){return slotOf[a]-slotOf[b];});
+  plan.push({type:"order"});
+
+  for(var round=1;round<=PICKS_PER_PERSON;round++){
+    order.forEach(function(name){
+      var live=LETTERS.filter(function(g){return rem[g].length>0;});
+      var top=Math.max.apply(null,live.map(function(g){return rem[g].length;}));
+      var tied=live.filter(function(g){return rem[g].length===top;});
+      var g=choice(tied);
+      var team=choice(rem[g]);
+      rem[g]=rem[g].filter(function(t){return t!==team;});
+      plan.push({type:"pick",name:name,slot:slotOf[name],group:g,team:team,top:top,round:round});
+    });
+  }
+}
+
+function cssId(s){return s.replace(/[^a-zA-Z]/g,"");}
+
+function renderShell(){
+  var rs=document.getElementById("rollstrip");
+  rs.innerHTML="";
+  NAMES.forEach(function(name){
+    var d=document.createElement("div");
+    d.className="rc";d.id="rc-"+name;
+    d.innerHTML='<div class="rname">'+name+'</div><div class="rdie" id="die-'+name+'">·</div><div class="rrolls" id="rl-'+name+'"></div>';
+    rs.appendChild(d);
+  });
+  var pots=document.getElementById("pots");
+  pots.innerHTML="";
+  LETTERS.forEach(function(g){
+    var div=document.createElement("div");
+    div.className="pot";div.id="pot-"+g;
+    var inner='<div class="ph">Group '+g+'<span class="ct" id="ct-'+g+'">4</span></div>';
+    GROUPS[g].forEach(function(t){
+      inner+='<div class="d-team" id="t-'+g+'-'+cssId(t)+'">'+t+'</div>';
+    });
+    div.innerHTML=inner;
+    pots.appendChild(div);
+  });
+  var ros=document.getElementById("rosters");
+  ros.innerHTML="";
+  NAMES.forEach(function(name){
+    var div=document.createElement("div");
+    div.className="ros";div.id="ros-"+name;
+    div.innerHTML='<div class="rh"><div class="d-slot" id="slot-'+name+'">–</div><div class="nm">'+name+'</div><div class="cnt" id="cnt-'+name+'">0 / 8</div></div><div class="chips" id="chips-'+name+'"></div>';
+    ros.appendChild(div);
+  });
+  document.getElementById("potsleft").textContent="48 teams left";
+  document.getElementById("picksdone").textContent="0 / 48 picks";
+}
+
+function setTicker(html,live){
+  document.getElementById("msg").innerHTML=html;
+  var t=document.getElementById("ticker"),b=document.getElementById("badge");
+  if(live){t.classList.remove("idle");b.textContent="Live";}
+  else{t.classList.add("idle");b.textContent="Done";}
+}
+
+function applyStep(s){
+  if(s.type==="roll"){
+    document.getElementById("die-"+s.name).textContent=s.slot;
+    document.getElementById("rl-"+s.name).textContent=s.rolls.length>1?"rolled "+s.rolls.join(","):"clean";
+    document.getElementById("rc-"+s.name).classList.add("done");
+    document.getElementById("slot-"+s.name).textContent=s.slot;
+    setTicker("<b>"+s.name+"</b> rolled "+s.rolls.join(", ")+" → slot <b>"+s.slot+"</b>.",true);
+  } else if(s.type==="order"){
+    var ord=order.map(function(n){return slotOf[n]+". "+n;}).join("  ·  ");
+    setTicker("Pick order locked → "+ord+". Now the draw begins.",true);
+    var ros=document.getElementById("rosters");
+    order.forEach(function(n){ros.appendChild(document.getElementById("ros-"+n));});
+  } else if(s.type==="pick"){
+    document.querySelectorAll("#draw-section .pot.active").forEach(function(e){e.classList.remove("active");});
+    document.querySelectorAll("#draw-section .ros.turn").forEach(function(e){e.classList.remove("turn");});
+    var pot=document.getElementById("pot-"+s.group);
+    pot.classList.add("active");
+    document.getElementById("ros-"+s.name).classList.add("turn");
+    var teamEl=document.getElementById("t-"+s.group+"-"+cssId(s.team));
+    if(teamEl){teamEl.classList.add("flash");setTimeout(function(){teamEl.classList.add("gone");},220);}
+    var ctEl=document.getElementById("ct-"+s.group);
+    var left=(+ctEl.textContent)-1;ctEl.textContent=left;
+    if(left===0) pot.classList.add("empty");
+    var chips=document.getElementById("chips-"+s.name);
+    document.querySelectorAll("#draw-section .chip.new").forEach(function(c){c.classList.remove("new");});
+    var chip=document.createElement("span");
+    chip.className="chip new";chip.textContent=s.group+" · "+s.team;
+    chips.appendChild(chip);
+    var made=chips.children.length;
+    document.getElementById("cnt-"+s.name).textContent=made+" / 8";
+    var totalLeft=LETTERS.reduce(function(a,g){return a+(+document.getElementById("ct-"+g).textContent);},0);
+    document.getElementById("potsleft").textContent=totalLeft+" teams left";
+    var done=plan.slice(0,idx+1).filter(function(p){return p.type==="pick";}).length;
+    document.getElementById("picksdone").textContent=done+" / 48 picks";
+    setTicker("Round "+s.round+" · <b>"+s.name+"</b> (slot "+s.slot+") draws from Group <b>"+s.group+"</b> ["+s.top+" left] → <b>"+s.team+"</b>.",true);
+  }
+}
+
+function stepOnce(){
+  if(idx>=plan.length){finish();return false;}
+  applyStep(plan[idx]);idx++;
+  if(idx>=plan.length){finish();}
+  return true;
+}
+function finish(){
+  stop();
+  document.querySelectorAll("#draw-section .pot.active").forEach(function(e){e.classList.remove("active");});
+  document.querySelectorAll("#draw-section .ros.turn").forEach(function(e){e.classList.remove("turn");});
+  setTicker("Draw complete — all 48 teams assigned, 8 per manager.",false);
+  document.getElementById("play").disabled=true;
+  document.getElementById("step").disabled=true;
+}
+function delay(){return 920-(+document.getElementById("spd").value-1)*180;}
+function loop(){if(!playing)return;if(stepOnce()){timer=setTimeout(loop,delay());}}
+function play(){if(playing)return;playing=true;document.getElementById("play").textContent="❚❚ Pause";loop();}
+function stop(){playing=false;clearTimeout(timer);document.getElementById("play").textContent="▶ Run the draw";}
+
+document.getElementById("play").addEventListener("click",function(){playing?stop():play();});
+document.getElementById("step").addEventListener("click",function(){stop();stepOnce();});
+document.getElementById("reset").addEventListener("click",function(){
+  stop();buildPlan();renderShell();
+  document.getElementById("play").disabled=false;
+  document.getElementById("step").disabled=false;
+  document.getElementById("play").textContent="▶ Run the draw";
+  setTicker("Press <b>Run the draw</b> to begin. Phase one: roll for pick order.",false);
+});
+
+buildPlan();
+renderShell();
+</script>
 </body>
 </html>
