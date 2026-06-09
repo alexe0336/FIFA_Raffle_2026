@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: worldcup_web
+    container_name: FIFA_Raffle_2026
     restart: unless-stopped
     # No host port published. cloudflared reaches this container privately
     # over the shared compose network at http://web:8080. Nothing is
@@ -20,7 +20,7 @@ services:
 
   cloudflared:
     image: cloudflare/cloudflared:latest
-    container_name: cloudflared
+    container_name: cloudflared_FIFA_RAFFLE
     restart: unless-stopped
     command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
     depends_on:
