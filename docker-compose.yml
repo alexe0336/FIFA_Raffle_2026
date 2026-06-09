@@ -5,11 +5,9 @@ services:
       dockerfile: Dockerfile
     container_name: worldcup_web
     restart: unless-stopped
-    # No host port published. cloudflared (running in its own compose project)
-    # reaches this container by name over the shared "tunnel-net" network at
-    # http://worldcup_web:8080. Nothing is exposed on the host.
-    networks:
-      - tunnel-net
+    # No host port published. cloudflared reaches this container privately
+    # over the shared compose network at http://web:8080. Nothing is
+    # exposed on the host — Cloudflare is the only way in.
     read_only: true
     tmpfs:
       - /tmp
@@ -20,6 +18,14 @@ services:
     mem_limit: 128m
     pids_limit: 100
 
-networks:
-  tunnel-net:
-    external: true
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    depends_on:
+      - web
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    pids_limit: 100
