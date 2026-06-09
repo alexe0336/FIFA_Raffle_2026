@@ -2,11 +2,10 @@
 #  World Cup 2026 Raffle — Docker Compose
 #
 #  Services:
-#    web       — Express app (port 3100, internal only)
-#    cloudflared — Cloudflare Zero Trust tunnel (no ports exposed)
+#    web — Express app (port 3100 exposed to host)
 #
 #  Volumes:
-#    raffle_data — Persistent CSV + votes.json; survives restarts
+#    raffle_data — Persistent data; survives restarts
 # ═══════════════════════════════════════════════════════════════
 
 services:
@@ -24,29 +23,11 @@ services:
       NODE_ENV: "production"
       # Set this to your public site URL to enforce CORS (e.g. https://yoursite.com)
       ALLOWED_ORIGIN: "${ALLOWED_ORIGIN:-}"
+    ports:
+      - "3100:3100"
     volumes:
       # Named volume → data persists across reboots & image rebuilds
       - raffle_data:/data
-    networks:
-      - internal
-    # ⚠ NOT exposed to the host — traffic comes via Cloudflare tunnel only
-    # If you want local testing without the tunnel, uncomment:
-    # ports:
-    #   - "3100:3100"
-
-  # ── Cloudflare Zero Trust Tunnel ───────────────────────────
-  cloudflared:
-    image: cloudflare/cloudflared:2026.5.2
-    container_name: worldcup_tunnel
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      # Paste your tunnel token here OR use a .env file (see README)
-      TUNNEL_TOKEN: "${CLOUDFLARE_TUNNEL_TOKEN}"
-    networks:
-      - internal
-    depends_on:
-      - web
 
 # ── Named Volume (persistent) ───────────────────────────────
 volumes:
@@ -57,8 +38,3 @@ volumes:
     #   type: none
     #   o: bind
     #   device: /srv/worldcup/data
-
-# ── Internal Network (no host exposure) ────────────────────
-networks:
-  internal:
-    driver: bridge
