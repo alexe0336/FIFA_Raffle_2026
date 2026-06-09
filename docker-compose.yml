@@ -5,9 +5,11 @@ services:
       dockerfile: Dockerfile
     container_name: worldcup_web
     restart: unless-stopped
-    # No host port published. The cloudflared service reaches this container
-    # privately over the internal compose network at http://web:8080, so
-    # nothing is exposed on the host at all — Cloudflare is the only way in.
+    # No host port published. cloudflared (running in its own compose project)
+    # reaches this container by name over the shared "tunnel-net" network at
+    # http://worldcup_web:8080. Nothing is exposed on the host.
+    networks:
+      - tunnel-net
     read_only: true
     tmpfs:
       - /tmp
@@ -18,16 +20,6 @@ services:
     mem_limit: 128m
     pids_limit: 100
 
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    restart: unless-stopped
-    # Token is read from a .env file (TUNNEL_TOKEN=...) next to this file.
-    # Never commit that file — it is gitignored.
-    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
-    depends_on:
-      - web
-    cap_drop: [ALL]
-    security_opt: ["no-new-privileges:true"]
-    mem_limit: 128m
-    pids_limit: 100
+networks:
+  tunnel-net:
+    external: true
