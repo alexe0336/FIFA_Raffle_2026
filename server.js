@@ -5,12 +5,18 @@ const { stringify } = require('csv-stringify/sync');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
+// Allowed origin for CORS — set via env var in production (e.g. https://yoursite.com)
+const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || null;
+
 const app = express();
 const PORT = process.env.PORT || 3100;
 
 const DATA_DIR = process.env.DATA_DIR || '/data';
 const ENTRIES_FILE = path.join(DATA_DIR, 'entries.csv');
 const BUY_IN = 20;
+
+// In-memory entry count — avoids re-reading the CSV on every /api/entries/count request
+let entryCount = 0;
 
 // Input limits
 const MAX_NAME_LEN = 120;
@@ -26,12 +32,18 @@ function ensureDataFiles() {
 }
 ensureDataFiles();
 
+// Seed in-memory count from existing CSV on startup
+try {
+  const lines = fs.readFileSync(ENTRIES_FILE, 'utf8').trim().split('\n').filter(Boolean);
+  entryCount = Math.max(0, lines.length - 1);
+} catch { entryCount = 0; }
+
 // ── Security middleware ────────────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc:  ["'self'", "'unsafe-inline'"],   // inline scripts in index.html
+      scriptSrc:  ["'self'"],                      // no unsafe-inline — JS lives in app.js
       styleSrc:   ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
       fontSrc:    ["'self'", 'https://fonts.gstatic.com'],
       imgSrc:     ["'self'", 'https://flagcdn.com', 'https://images.unsplash.com', 'data:'],
@@ -40,17 +52,36 @@ app.use(helmet({
   },
 }));
 
+// ── CORS — only allow requests from the configured origin ─────────────────
+app.use(function(req, res, next) {
+  const origin = req.headers.origin;
+  if (ALLOWED_ORIGIN && origin === ALLOWED_ORIGIN) {
+    res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 // ── General middleware ─────────────────────────────────────────────────────
 app.use(express.json({ limit: '4kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ── Rate limiter for registration ──────────────────────────────────────────
+// ── Rate limiters ──────────────────────────────────────────────────────────
 const registerLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 5,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Too many sign-up attempts. Please try again in 15 minutes.' },
+});
+
+const countLimiter = rateLimit({
+  windowMs: 60 * 1000,  // 1 minute
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 // ── 2026 World Cup Countries (48 teams) ───────────────────────────────────
@@ -134,15 +165,9 @@ app.get('/api/tournament', (req, res) => {
   }
 });
 
-// Entry count (no PII exposed)
-app.get('/api/entries/count', (req, res) => {
-  try {
-    const content = fs.readFileSync(ENTRIES_FILE, 'utf8').trim();
-    const lines = content.split('\n').filter(Boolean);
-    res.json({ count: Math.max(0, lines.length - 1) });
-  } catch {
-    res.json({ count: 0 });
-  }
+// Entry count — served from in-memory cache, rate limited
+app.get('/api/entries/count', countLimiter, (req, res) => {
+  res.json({ count: entryCount });
 });
 
 // Submit registration — rate-limited
@@ -177,6 +202,7 @@ app.post('/api/register', registerLimiter, (req, res) => {
       console.error('Write error:', err);
       return res.status(500).json({ error: 'Failed to save your entry. Please try again.' });
     }
+    entryCount++;
     res.json({ success: true, message: "You're in! 🏆" });
   });
 });

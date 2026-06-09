@@ -22,6 +22,8 @@ services:
       PORT: "3100"
       DATA_DIR: "/data"
       NODE_ENV: "production"
+      # Set this to your public site URL to enforce CORS (e.g. https://yoursite.com)
+      ALLOWED_ORIGIN: "${ALLOWED_ORIGIN:-}"
     volumes:
       # Named volume → data persists across reboots & image rebuilds
       - raffle_data:/data
@@ -34,7 +36,7 @@ services:
 
   # ── Cloudflare Zero Trust Tunnel ───────────────────────────
   cloudflared:
-    image: cloudflare/cloudflared:latest
+    image: cloudflare/cloudflared:2026.5.2
     container_name: worldcup_tunnel
     restart: unless-stopped
     command: tunnel --no-autoupdate run
