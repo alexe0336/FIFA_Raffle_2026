@@ -1,16 +1,9 @@
 # ═══════════════════════════════════════════════════════════════
 #  World Cup 2026 Raffle — Docker Compose
-#
-#  Services:
-#    web — Express app (port 3100 exposed to host)
-#
-#  Volumes:
-#    raffle_data — Persistent data; survives restarts
 # ═══════════════════════════════════════════════════════════════
 
 services:
 
-  # ── Web Application ────────────────────────────────────────
   web:
     build:
       context: .
@@ -19,22 +12,8 @@ services:
     restart: unless-stopped
     environment:
       PORT: "3100"
-      DATA_DIR: "/data"
       NODE_ENV: "production"
       # Set this to your public site URL to enforce CORS (e.g. https://yoursite.com)
       ALLOWED_ORIGIN: "${ALLOWED_ORIGIN:-}"
     ports:
       - "3100:3100"
-    volumes:
-      # Named volume → data persists across reboots & image rebuilds
-      - raffle_data:/data
-
-# ── Named Volume (persistent) ───────────────────────────────
-volumes:
-  raffle_data:
-    driver: local
-    # To specify a host path instead of a Docker-managed volume:
-    # driver_opts:
-    #   type: none
-    #   o: bind
-    #   device: /srv/worldcup/data
