@@ -83,27 +83,19 @@ section,header,footer,.draw-section{position:relative;z-index:1}
 .a-team{font-size:12px;letter-spacing:.04em;background:var(--bg-card2);border:1px solid var(--border);border-radius:50px;padding:5px 12px;color:var(--text-muted)}
 .a-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:14px;line-height:1.7}
 
-/* ── REGISTER ───────────────────────────────────────────── */
-.reg{border-top:1px solid var(--border);padding:80px 24px 120px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.06) 0%,rgba(77,159,255,.04) 60%,transparent 100%)}
-.reg-inner{max-width:680px;margin:0 auto}
-.reg-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-top:-24px;margin-bottom:40px;line-height:1.6}
-.reg-sub strong{color:var(--green)}
-.fblock{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:32px;display:flex;flex-direction:column;gap:20px}
-.ffield{display:flex;flex-direction:column;gap:8px}
-.ffield label{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
-.ffield input{background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;color:var(--text);font-family:var(--fb);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
-.ffield input::placeholder{color:var(--text-dim)}
-.ffield input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow)}
-.ecnt{text-align:center;font-family:var(--fc);font-size:13px;color:var(--text-muted);letter-spacing:.06em}
-.sbtn{width:100%;padding:18px;background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);border:none;border-radius:var(--r);color:#000;font-family:var(--fc);font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s;box-shadow:0 4px 20px var(--green-glow)}
-.sbtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,217,106,.45)}
-.sbtn:active:not(:disabled){transform:scale(.98)}
-.sbtn:disabled{opacity:.5;cursor:not-allowed}
-.fnote{text-align:center;font-size:12px;color:var(--text-dim)}
-.toast{margin-top:16px;border-radius:var(--r);font-family:var(--fc);font-size:16px;letter-spacing:.04em;text-align:center;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s,opacity .3s;opacity:0}
-.toast.show{max-height:80px;padding:16px;opacity:1}
-.toast.ok{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green)}
-.toast.err{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}
+/* ── TIEBREAKER LIST ────────────────────────────────────── */
+.tb-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.tb-list>li{font-size:14px;color:var(--text-muted);line-height:1.7;padding-left:28px;position:relative}
+.tb-list>li::before{position:absolute;left:0;color:var(--blue);font-weight:700;font-family:var(--fc)}
+.tb-list>.tb-a::before{content:'(a)'}
+.tb-list>.tb-b::before{content:'(b)'}
+.tb-list>.tb-c::before{content:'(c)'}
+.tb-list>.tb-d::before{content:'(d)'}
+.tb-list>.tb-e::before{content:'(e)'}
+.tb-sub{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:6px;padding-left:4px}
+.tb-sub li{font-size:13px;color:var(--text-dim);line-height:1.65;padding-left:24px;position:relative}
+.tb-sub li::before{content:'';position:absolute;left:8px;top:10px;width:6px;height:1px;background:var(--text-dim)}
+.tb-highlight{color:var(--text);font-weight:500}
 
 /* ── FOOTER ─────────────────────────────────────────────── */
 footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:13px}
@@ -329,43 +321,51 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 <!-- ── HOW THE RAFFLE WORKS ── -->
 <section class="raffle-sec" id="how-it-works">
   <h2 class="sec-title">How the Raffle Works</h2>
-  <p class="sec-sub">Each participant is randomly assigned teams from the 48 nations, then roots for their countries through the entire tournament. Three place tiers — bragging rights on the line.</p>
+  <p class="sec-sub">Each participant is randomly assigned 8 teams from the 48 nations competing. Root for your countries through the entire tournament — three places awarded.</p>
 
   <div class="raffle-flow">
     <div class="rflow-card rfc-assign">
       <span class="rflow-icon">🎲</span>
-      <h3>Random Team Assignment</h3>
-      <p>Every participant is randomly assigned teams/countries from the field of 48. The number of teams each player receives depends on how many people are in the raffle — the more players, the fewer teams per person.</p>
+      <h3>Team Assignment</h3>
+      <p>Every participant draws 8 teams from the field of 48 via the seeded draw shown above. Each of the 12 groups is drained evenly so no single group is gutted before another is touched.</p>
     </div>
     <div class="rflow-card rfc-1st">
       <span class="rflow-icon">🥇</span>
       <h3>1st Place</h3>
-      <p>If one of your assigned countries wins the FIFA World Cup Final and lifts the trophy, you win 1st place. This is the top prize.</p>
+      <p>The entrant holding the team that wins the World Cup Final wins 1st place.</p>
     </div>
     <div class="rflow-card rfc-2nd">
       <span class="rflow-icon">🥈</span>
       <h3>2nd Place</h3>
-      <p>The player holding the World Cup runner-up team wins 2nd place. If that nation belongs to the same player who already won 1st place, 2nd place goes to the player holding the highest FIFA-ranked team remaining.</p>
+      <p>The entrant holding the runner-up wins 2nd place — unless that entrant also holds 1st place. In that case the tiebreaker rules below apply.</p>
     </div>
     <div class="rflow-card rfc-3rd">
       <span class="rflow-icon">🥉</span>
       <h3>3rd Place</h3>
-      <p>The team that wins the 3rd-place match (the game between the two semi-final losers) earns 3rd place. If the winner of 3rd place also has a team that wins 1st or second place, only the higher placement counts. Third place then goes to the highest ranking team not assigned by 1st place or 2nd place winner.</p>
-    </div>
-    <div class="rflow-card rfc-rule">
-      <span class="rflow-icon">📋</span>
-      <h3>One Place Per Player</h3>
-      <p>If you're lucky enough to hold teams that finish in multiple positions, only your highest placement counts. The next tier rolls down to the next eligible player, so every place goes to a different person.</p>
+      <p>The entrant holding the winner of the 3rd-place match wins 3rd place. If they already hold a higher placement, the same roll-down logic applies.</p>
     </div>
   </div>
 
   <div class="rules-box">
-    <h3>⚖️ Key Rules</h3>
-    <ul class="rules-list">
-      <li>Each player is randomly assigned an equal share of the 48 teams via the raffle draw.</li>
-      <li>If a single player holds both the 1st and 2nd place finishers, only 1st place is awarded to them. 2nd place then goes to the player holding the highest FIFA-ranked team among all other players.</li>
-      <li>3rd place goes to the team that wins the 3rd place match. If the winner of 3rd place also has a team that wins 1st or second place, only the higher placement counts. Third place then goes to the highest ranking team not assigned by 1st place or 2nd place winner.</li>
-      <li>If you hold multiple finishers in the top three, only your best placement counts. Lower placements roll to the next eligible player.</li>
+    <h3>⚖️ Tiebreaker for Second Place</h3>
+    <p style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px">If the entrant holding <span class="tb-highlight">First Place</span> would, under the standard scoring rules, also hold the team that lost the Final Match, then Second Place shall instead be awarded as follows:</p>
+    <ul class="tb-list">
+      <li class="tb-a">Compare the teams that lost <strong>Match 61</strong> and <strong>Match 62</strong>. Second Place is awarded to the entrant holding the losing team with the <span class="tb-highlight">greater number of goals scored</span> in its respective match.</li>
+      <li class="tb-b">If those two losing teams scored an equal number of goals, the following criteria apply in this exact order, each resolving the tie before the next is consulted:
+        <ul class="tb-sub">
+          <li>(1) Higher possession percentage</li>
+          <li>(2) More shots on goal</li>
+          <li>(3) More total shot attempts</li>
+          <li>(4) Fewer fouls</li>
+          <li>(5) Fewer yellow cards</li>
+          <li>(6) Fewer red cards</li>
+          <li>(7) More corner kicks</li>
+          <li>(8) More saves</li>
+        </ul>
+      </li>
+      <li class="tb-c">If both losing teams of Matches 61 and 62 are held by the First-Place entrant, apply subsections (a)–(b) to the teams that lost <strong>Matches 57, 58, 59, and 60</strong>, ranked first by goals scored and then by the criteria in (b).</li>
+      <li class="tb-d">The same procedure applies where the First-Place or Second-Place entrant also holds the winner of the <strong>Third-Place Match</strong>: that placement is reassigned using subsections (a)–(b).</li>
+      <li class="tb-e"><span class="tb-highlight">Final backstop.</span> If two or more teams remain tied after every criterion above, the tie shall be resolved however the organizer of the raffle determines, which is final and binding.</li>
     </ul>
   </div>
 
@@ -386,30 +386,6 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <h2 class="sec-title">Team Assignments</h2>
   <p class="sec-sub">Every participant's assigned countries are listed below. Root for your teams all the way to the Final.</p>
   <div class="agrid" id="agrid"><div class="a-empty">Loading assignments…</div></div>
-</section>
-
-<!-- ── REGISTER ── -->
-<section class="reg" id="register">
-  <div class="reg-inner">
-    <h2 class="sec-title">Join the Raffle</h2>
-    <p class="reg-sub">Sign up to be randomly assigned teams from the 48 nations. The raffle is <strong>open now</strong> — teams are assigned at the draw.</p>
-    <div class="fblock">
-      <div class="ffield">
-        <label for="fname">Full Name</label>
-        <input type="text" id="fname" placeholder="John Doe" autocomplete="name"/>
-      </div>
-      <div class="ffield">
-        <label for="contact">Email or Phone Number</label>
-        <input type="text" id="contact" placeholder="john@email.com  or  555-867-5309" autocomplete="email"/>
-      </div>
-      <div class="ecnt" id="ecnt">Checking current entries…</div>
-      <button class="sbtn" id="sbtn" onclick="submitEntry()">
-        <span id="btntxt">Sign Me Up</span>
-      </button>
-      <p class="fnote">⚽ Your info is stored securely and used only for raffle tracking.</p>
-    </div>
-    <div class="toast" id="toast"></div>
-  </div>
 </section>
 
 <!-- ── FOOTER ── -->
