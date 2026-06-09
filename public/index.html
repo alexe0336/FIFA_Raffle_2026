@@ -3,32 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>World Cup 2026 — Raffle Tracker</title>
+<title>FIFA World Cup 2026 — Raffle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&family=Archivo:wght@500;600;700;800&family=Archivo+Narrow:wght@500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
+/* ── SITE VARIABLES & RESET ─────────────────────────────── */
 :root{
-  /* Backgrounds — deep navy, visibly lighter than before */
   --bg:#0b1e36;--bg-card:#132d4f;--bg-card2:#1a3a62;
   --border:rgba(255,255,255,.10);--border-hi:rgba(255,255,255,.22);
-
-  /* Mexico — vibrant green */
   --green:#00e676;--green-dark:#00c853;--green-glow:rgba(0,230,118,.22);
-
-  /* Canada — vibrant red */
-  --red:#ff4757;--red-dark:#e53935;--red-glow:rgba(255,71,87,.22);
-
-  /* USA — vibrant blue */
+  --red:#ff4757;--red-dark:#e53935;
   --blue:#4d9fff;--blue-dark:#2979ff;--blue-glow:rgba(77,159,255,.22);
-
-  /* Accents */
-  --gold:#f0c040;--gold-glow:rgba(240,192,64,.2);
-  --silver:#b0bec5;--bronze:#cd7f32;
-
-  /* Text — slightly warm white with navy-tinted mids */
+  --gold:#f0c040;--silver:#b0bec5;--bronze:#cd7f32;
   --text:#f0f6ff;--text-muted:#7a9cc0;--text-dim:#3d5a7a;
-
   --fd:'Bebas Neue',sans-serif;--fc:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;
   --r:10px;--rl:18px;
 }
@@ -42,44 +30,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hid
 .o3{width:450px;height:450px;background:var(--red-dark);bottom:10%;left:20%;animation-delay:-12s}
 @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(40px,30px) scale(1.08)}}
 .grid-lines{position:fixed;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.015) 79px,rgba(255,255,255,.015) 80px);pointer-events:none;z-index:0}
-section,header,footer{position:relative;z-index:1}
+section,header,footer,.draw-section{position:relative;z-index:1}
 
-/* ── OPEN BADGE ── */
-.open-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,71,87,.13);border:1px solid var(--red);border-radius:50px;padding:6px 18px;font-family:var(--fc);font-weight:700;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:24px}
-.pulse-dot{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pulse 1.4s ease infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-
-/* ── HERO ── */
-.hero{text-align:center;padding:80px 24px 72px;max-width:900px;margin:0 auto}
-.trophy{font-size:72px;display:block;margin-bottom:16px;animation:tp 3s ease-in-out infinite;filter:drop-shadow(0 0 20px rgba(240,192,64,.3))}
+/* ── HERO (compact) ─────────────────────────────────────── */
+.hero{text-align:center;padding:44px 24px 36px;max-width:900px;margin:0 auto}
+.trophy{font-size:48px;display:block;margin-bottom:10px;animation:tp 3s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(240,192,64,.3))}
 @keyframes tp{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
-.eyebrow{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.35em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
-.hero-title{font-family:var(--fd);font-size:clamp(64px,12vw,140px);line-height:.92;letter-spacing:.02em;margin-bottom:16px;display:flex;flex-direction:column;align-items:center}
+.eyebrow{font-family:var(--fc);font-weight:600;font-size:12px;letter-spacing:.35em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.hero-title{font-family:var(--fd);font-size:clamp(42px,8vw,88px);line-height:.92;letter-spacing:.02em;margin-bottom:10px;display:flex;flex-direction:column;align-items:center}
 .hero-title .word{display:block}
 .hero-title .accent{background:linear-gradient(135deg,var(--red) 0%,var(--blue) 50%,var(--green) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-family:var(--fc);font-weight:300;font-size:18px;letter-spacing:.4em;color:var(--text-muted);text-transform:uppercase;margin-bottom:40px}
+.hero-sub{font-family:var(--fc);font-weight:300;font-size:15px;letter-spacing:.35em;color:var(--text-muted);text-transform:uppercase}
 
-/* ── INFO CARDS ── */
-.cd-grid{display:flex;align-items:stretch;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px}
-.cd-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:22px 28px;display:flex;flex-direction:column;gap:4px;min-width:190px;transition:border-color .2s}
-.cd-card:hover{border-color:var(--border-hi)}
-.cd-card.hi{border-color:var(--green);box-shadow:0 0 30px var(--green-glow),inset 0 0 20px rgba(0,230,118,.04)}
-.cd-card.blue-card{border-color:var(--blue);box-shadow:0 0 30px var(--blue-glow)}
-.cd-label{font-family:var(--fc);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted)}
-.cd-date{font-family:var(--fd);font-size:26px;color:var(--text);letter-spacing:.04em}
-.hi .cd-date{color:var(--green)}
-.blue-card .cd-date{color:var(--blue)}
-.cd-note{font-size:12px;color:var(--text-muted)}
-.hero-cta{display:inline-block;padding:14px 40px;background:linear-gradient(135deg,var(--green-dark),var(--green));color:#000;font-family:var(--fc);font-weight:700;font-size:16px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border-radius:50px;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 24px var(--green-glow)}
-.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 40px rgba(0,230,118,.45)}
-
-/* ── SECTION TITLES ── */
+/* ── SECTION TITLES ─────────────────────────────────────── */
 .sec-title{font-family:var(--fd);font-size:clamp(36px,6vw,72px);letter-spacing:.04em;text-align:center;margin-bottom:12px}
 .sec-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-bottom:40px;max-width:620px;margin-left:auto;margin-right:auto;line-height:1.6}
 
-/* ── HOW RAFFLE WORKS ── */
+/* ── HOW RAFFLE WORKS ───────────────────────────────────── */
 .raffle-sec{max-width:1040px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
-
 .raffle-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:56px}
 .rflow-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:26px 22px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
 .rflow-card:hover{border-color:var(--border-hi);transform:translateY(-3px)}
@@ -92,68 +60,21 @@ section,header,footer{position:relative;z-index:1}
 .rflow-icon{font-size:32px;display:block;margin-bottom:14px}
 .rflow-card h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.05em;margin-bottom:8px;color:var(--text)}
 .rflow-card p{font-size:14px;color:var(--text-muted);line-height:1.65}
-.prize-pct{font-family:var(--fd);font-size:42px;letter-spacing:.04em;margin-bottom:4px}
-.pct-gold{color:var(--gold)}
-.pct-silver{color:var(--silver)}
-.pct-bronze{color:var(--bronze)}
-
-
-/* ── RULES BOX ── */
 .rules-box{background:var(--bg-card);border:1px solid rgba(77,159,255,.35);border-radius:var(--rl);padding:28px 32px;margin-bottom:20px}
 .rules-box h3{font-family:var(--fc);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
 .rules-list{list-style:none;display:flex;flex-direction:column;gap:10px}
 .rules-list li{font-size:14px;color:var(--text-muted);line-height:1.6;padding-left:20px;position:relative}
 .rules-list li::before{content:'→';position:absolute;left:0;color:var(--blue);font-weight:700}
 
-/* ── STADIUM IMAGE ── */
-.stadium-wrap{position:relative;width:100%;height:380px;overflow:hidden;z-index:1}
-.stadium-img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block;filter:brightness(.55) saturate(1.1)}
-.stadium-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 25%,transparent 70%,var(--bg) 100%)}
-.stadium-label{position:absolute;bottom:20px;right:24px;font-family:var(--fc);font-size:11px;letter-spacing:.12em;color:rgba(255,255,255,.3);text-transform:uppercase}
-
-/* ── MADE BY ── */
-.madeby{font-family:var(--fc);font-size:12px;color:var(--text-dim);letter-spacing:.08em}
-.madeby span{color:var(--red)}
-
-/* ── FIFA LINKS ── */
+/* ── FIFA LINKS ─────────────────────────────────────────── */
 .fifa-link-wrap{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 .fifa-link{display:inline-flex;align-items:center;gap:10px;background:var(--bg-card);border:1px solid var(--border);border-radius:50px;padding:12px 28px;color:var(--text);text-decoration:none;font-family:var(--fc);font-weight:600;font-size:14px;letter-spacing:.1em;text-transform:uppercase;transition:all .2s}
 .fifa-link:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px)}
 .fifa-link svg{width:18px;height:18px;opacity:.6;transition:opacity .2s}
 .fifa-link:hover svg{opacity:1}
 
-/* ── CONFEDERATION LEGEND ── */
-.conf-legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px;margin-bottom:32px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px}
-.conf-item{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)}
-.conf-item:last-child{border-bottom:none}
-.conf-abbr{font-family:var(--fc);font-weight:700;font-size:14px;letter-spacing:.08em;color:var(--blue);min-width:90px;flex-shrink:0}
-.conf-fullname{font-size:13px;color:var(--text-muted);line-height:1.4}
-
-/* ── COUNTRIES ── */
-.countries{max-width:1200px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:36px}
-.tab{background:transparent;border:1px solid var(--border);color:var(--text-muted);font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border-radius:50px;cursor:pointer;transition:all .2s}
-.tab:hover{border-color:var(--border-hi);color:var(--text)}
-.tab.active{background:var(--red);border-color:var(--red);color:#fff}
-.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.loading{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:60px 0;font-family:var(--fc);letter-spacing:.1em}
-.ccard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;padding:16px 10px 14px;gap:10px;transition:all .2s;animation:cin .4s ease both}
-.ccard:hover{border-color:var(--blue);transform:translateY(-4px);background:var(--bg-card2);box-shadow:0 8px 28px rgba(77,159,255,.2)}
-@keyframes cin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.cflag{width:72px;height:48px;object-fit:cover;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.5);background:var(--bg-card2)}
-.cname{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.03em;text-align:center;color:var(--text);line-height:1.3}
-.cconf{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);font-family:var(--fc)}
-
-/* ── KEY MATCHES ── */
-.kmgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.kmcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:6px;transition:border-color .2s}
-.kmcard:hover{border-color:var(--blue)}
-.km-label{font-family:var(--fc);font-weight:700;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue)}
-.km-matchup{font-family:var(--fd);font-size:24px;letter-spacing:.03em;color:var(--text)}
-.km-when{font-size:13px;color:var(--text-muted)}
-.km-venue{font-size:12px;color:var(--text-dim)}
-
-/* ── ASSIGNMENTS ── */
+/* ── ASSIGNMENTS ────────────────────────────────────────── */
+.assign-sec{max-width:1200px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
 .agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .acard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
 .acard:hover{border-color:var(--green)}
@@ -162,50 +83,179 @@ section,header,footer{position:relative;z-index:1}
 .a-team{font-size:12px;letter-spacing:.04em;background:var(--bg-card2);border:1px solid var(--border);border-radius:50px;padding:5px 12px;color:var(--text-muted)}
 .a-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:14px;line-height:1.7}
 
-/* ── BRACKET ── */
-.bracket-groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:48px}
-.bgroup{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:16px}
-.bgroup h4{font-family:var(--fc);font-weight:700;font-size:13px;letter-spacing:.1em;color:var(--gold);margin-bottom:10px;text-transform:uppercase}
-.bgroup ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-.bgroup li{font-size:13px;color:var(--text-muted);padding:6px 10px;background:var(--bg-card2);border-radius:6px}
-.bracket-rounds{display:flex;gap:18px;overflow-x:auto;padding-bottom:12px}
-.bround{display:flex;flex-direction:column;justify-content:space-around;gap:14px;min-width:170px;flex-shrink:0}
-.bround h4{font-family:var(--fc);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);text-align:center;margin-bottom:6px}
-.bmatch{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:13px;color:var(--text-dim);text-align:center;letter-spacing:.03em}
+/* ── TIEBREAKER LIST ────────────────────────────────────── */
+.tb-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.tb-list>li{font-size:14px;color:var(--text-muted);line-height:1.7;padding-left:28px;position:relative}
+.tb-list>li::before{position:absolute;left:0;color:var(--blue);font-weight:700;font-family:var(--fc)}
+.tb-list>.tb-a::before{content:'(a)'}
+.tb-list>.tb-b::before{content:'(b)'}
+.tb-list>.tb-c::before{content:'(c)'}
+.tb-list>.tb-d::before{content:'(d)'}
+.tb-list>.tb-e::before{content:'(e)'}
+.tb-sub{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:6px;padding-left:4px}
+.tb-sub li{font-size:13px;color:var(--text-dim);line-height:1.65;padding-left:24px;position:relative}
+.tb-sub li::before{content:'';position:absolute;left:8px;top:10px;width:6px;height:1px;background:var(--text-dim)}
+.tb-highlight{color:var(--text);font-weight:500}
 
-/* ── REGISTER ── */
-.reg{border-top:1px solid var(--border);padding:80px 24px 120px;background:radial-gradient(ellipse at 50% 0%,rgba(0,230,118,.06) 0%,rgba(77,159,255,.04) 60%,transparent 100%)}
-.reg-inner{max-width:680px;margin:0 auto}
-.reg-sub{text-align:center;color:var(--text-muted);font-size:15px;margin-top:-24px;margin-bottom:40px;line-height:1.6}
-.reg-sub strong{color:var(--green)}
-.fblock{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rl);padding:32px;display:flex;flex-direction:column;gap:20px}
-.ffield{display:flex;flex-direction:column;gap:8px}
-.ffield label{font-family:var(--fc);font-weight:600;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
-.ffield input{background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;color:var(--text);font-family:var(--fb);font-size:15px;outline:none;transition:border-color .2s,box-shadow .2s}
-.ffield input::placeholder{color:var(--text-dim)}
-.ffield input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow)}
-.ecnt{text-align:center;font-family:var(--fc);font-size:13px;color:var(--text-muted);letter-spacing:.06em}
-.sbtn{width:100%;padding:18px;background:linear-gradient(135deg,var(--green-dark) 0%,var(--green) 100%);border:none;border-radius:var(--r);color:#000;font-family:var(--fc);font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:transform .15s,box-shadow .2s,opacity .2s;box-shadow:0 4px 20px var(--green-glow)}
-.sbtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,217,106,.45)}
-.sbtn:active:not(:disabled){transform:scale(.98)}
-.sbtn:disabled{opacity:.5;cursor:not-allowed}
-.fnote{text-align:center;font-size:12px;color:var(--text-dim)}
-.toast{margin-top:16px;border-radius:var(--r);font-family:var(--fc);font-size:16px;letter-spacing:.04em;text-align:center;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s,opacity .3s;opacity:0}
-.toast.show{max-height:80px;padding:16px;opacity:1}
-.toast.ok{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green)}
-.toast.err{background:rgba(255,71,87,.12);border:1px solid var(--red);color:var(--red)}
-
-/* ── FOOTER ── */
+/* ── FOOTER ─────────────────────────────────────────────── */
 footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--text-muted);font-size:13px}
 .fbadge{font-family:var(--fd);font-size:22px;color:var(--text);letter-spacing:.08em;margin-bottom:4px}
 .fsmall{font-size:11px;color:var(--text-dim);margin-top:4px}
+.madeby{font-family:var(--fc);font-size:12px;color:var(--text-dim);letter-spacing:.08em}
+.madeby span{color:var(--red)}
 
+/* ── DRAW SECTION (scoped) ──────────────────────────────── */
+#draw-section{
+  --d-pitch:#0a1f17;--d-pitch-2:#0d2a1e;--d-line:#1d4533;--d-line-soft:#163427;
+  --d-chalk:#eef4ef;--d-chalk-dim:#8fb3a1;--d-gold:#f2c14e;--d-gold-deep:#c9971f;
+  --d-live:#e6492d;--d-ink:#06140e;
+  background:
+    radial-gradient(120% 80% at 50% -10%,#11342450 0%,transparent 60%),
+    repeating-linear-gradient(90deg,var(--d-pitch) 0 64px,var(--d-pitch-2) 64px 128px),
+    var(--d-pitch);
+  color:var(--d-chalk);
+  font-family:"Archivo Narrow",system-ui,sans-serif;
+  padding:40px 18px 48px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+#draw-section *{box-sizing:border-box;}
+#draw-section .d-wrap{max-width:1040px;margin:0 auto;}
+#draw-section .board{
+  border:1px solid var(--d-line);border-radius:14px;
+  background:linear-gradient(180deg,#0e2c20,#0a2117);
+  padding:22px 26px;position:relative;overflow:hidden;
+}
+#draw-section .board::after{
+  content:"";position:absolute;left:0;right:0;top:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--d-gold),transparent);opacity:.7;
+}
+#draw-section .d-eyebrow{
+  font-family:"IBM Plex Mono",monospace;letter-spacing:.34em;text-transform:uppercase;
+  font-size:11px;color:var(--d-gold);margin:0 0 8px;
+}
+#draw-section .d-title{
+  font-family:"Archivo",sans-serif;font-weight:800;
+  font-size:clamp(30px,6vw,52px);line-height:.96;margin:0;
+  letter-spacing:-.02em;text-transform:uppercase;color:var(--d-chalk);
+}
+#draw-section .d-title .thin{color:var(--d-chalk-dim);font-weight:600;}
+#draw-section .d-sub{margin:12px 0 0;color:var(--d-chalk-dim);font-size:15px;max-width:62ch;}
+#draw-section .controls{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0 6px;
+}
+#draw-section button{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;
+  font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--d-ink);background:var(--d-gold);
+  border:none;border-radius:8px;padding:11px 16px;cursor:pointer;
+  transition:transform .08s ease,background .15s ease,opacity .15s;
+}
+#draw-section button.ghost{background:transparent;color:var(--d-chalk);border:1px solid var(--d-line);}
+#draw-section button:hover{transform:translateY(-1px);}
+#draw-section button:active{transform:translateY(0);}
+#draw-section button:disabled{opacity:.35;cursor:default;transform:none;}
+#draw-section .speed{
+  margin-left:auto;display:flex;align-items:center;gap:8px;
+  color:var(--d-chalk-dim);font-family:"IBM Plex Mono",monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+}
+#draw-section .speed input{accent-color:var(--d-gold);}
+#draw-section .ticker{
+  margin-top:14px;border:1px solid var(--d-line);border-radius:10px;
+  background:#081b13;min-height:52px;
+  display:flex;align-items:center;gap:14px;padding:12px 16px;
+  font-family:"IBM Plex Mono",monospace;
+}
+#draw-section .ticker .d-badge{
+  background:var(--d-live);color:#fff;font-size:10px;font-weight:600;
+  letter-spacing:.18em;padding:4px 8px;border-radius:5px;text-transform:uppercase;
+  animation:dpulse 1.4s infinite;flex:none;
+}
+#draw-section .ticker.idle .d-badge{background:var(--d-line);animation:none;}
+#draw-section .ticker .d-msg{font-size:14px;color:var(--d-chalk);line-height:1.3;}
+#draw-section .ticker .d-msg b{color:var(--d-gold);}
+@keyframes dpulse{0%,100%{opacity:1}50%{opacity:.45}}
+#draw-section .d-layout{
+  display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:24px;
+}
+@media(max-width:860px){#draw-section .d-layout{grid-template-columns:1fr;}}
+#draw-section .panel-title{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--d-chalk-dim);margin:0 0 12px;
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+#draw-section .panel-title span{color:var(--d-gold);}
+#draw-section .pots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:520px){#draw-section .pots{grid-template-columns:repeat(3,1fr);}}
+#draw-section .pot{
+  border:1px solid var(--d-line);border-radius:10px;background:#0b2418;
+  padding:10px 8px;min-height:118px;display:flex;flex-direction:column;
+  transition:border-color .3s,opacity .4s;
+}
+#draw-section .pot .ph{
+  font-family:"Archivo",sans-serif;font-weight:700;font-size:13px;
+  display:flex;justify-content:space-between;align-items:center;
+  color:var(--d-chalk);margin-bottom:8px;
+}
+#draw-section .pot .ct{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--d-gold);}
+#draw-section .pot.empty{opacity:.32;border-style:dashed;}
+#draw-section .pot.active{border-color:var(--d-gold);box-shadow:0 0 0 1px var(--d-gold),0 0 18px #f2c14e44;}
+#draw-section .d-team{
+  font-size:12px;line-height:1.5;color:var(--d-chalk-dim);
+  padding:2px 0;border-bottom:1px dashed var(--d-line-soft);
+  transition:opacity .35s,transform .35s;
+}
+#draw-section .d-team:last-child{border-bottom:none;}
+#draw-section .d-team.gone{opacity:0;transform:translateX(8px);height:0;padding:0;overflow:hidden;border:none;}
+#draw-section .d-team.flash{color:var(--d-gold);font-weight:600;}
+#draw-section .rosters{display:flex;flex-direction:column;gap:10px;}
+#draw-section .ros{
+  border:1px solid var(--d-line);border-radius:10px;background:#0b2418;
+  padding:10px 13px;transition:border-color .25s,box-shadow .25s;
+}
+#draw-section .ros.turn{border-color:var(--d-gold);box-shadow:0 0 0 1px var(--d-gold);}
+#draw-section .ros .rh{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+#draw-section .d-slot{
+  width:26px;height:26px;border-radius:6px;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  font-family:"Archivo",sans-serif;font-weight:800;font-size:13px;
+  background:var(--d-gold);color:var(--d-ink);
+}
+#draw-section .nm{font-family:"Archivo",sans-serif;font-weight:700;font-size:15px;letter-spacing:.01em;color:var(--d-chalk);}
+#draw-section .cnt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--d-chalk-dim);}
+#draw-section .chips{display:flex;flex-wrap:wrap;gap:5px;min-height:8px;}
+#draw-section .chip{
+  font-size:11px;font-family:"IBM Plex Mono",monospace;
+  background:#10342450;border:1px solid var(--d-line);color:var(--d-chalk);
+  padding:3px 8px;border-radius:999px;animation:ddrop .4s ease;
+}
+#draw-section .chip.new{background:var(--d-gold);color:var(--d-ink);border-color:var(--d-gold-deep);}
+@keyframes ddrop{from{opacity:0;transform:translateY(-6px) scale(.9);}to{opacity:1;transform:none;}}
+#draw-section .rollstrip{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:8px;
+}
+#draw-section .rc{
+  border:1px solid var(--d-line);border-radius:8px;background:#0b2418;
+  padding:8px 6px;text-align:center;transition:border-color .25s;
+}
+#draw-section .rc .rname{font-family:"Archivo",sans-serif;font-weight:600;font-size:12px;color:var(--d-chalk);}
+#draw-section .rc .rdie{
+  font-family:"IBM Plex Mono",monospace;font-size:22px;font-weight:600;
+  color:var(--d-gold);margin-top:2px;min-height:26px;
+}
+#draw-section .rc .rrolls{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--d-chalk-dim);margin-top:2px;min-height:13px;}
+#draw-section .rc.done{border-color:var(--d-gold);}
+#draw-section .draw-footer{
+  margin-top:30px;text-align:center;color:var(--d-chalk-dim);
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+}
 @media(max-width:700px){
-  .cgrid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
-  .hero{padding:60px 16px 60px}
+  .hero{padding:32px 16px 28px}
   .rules-box{padding:20px}
   .fblock{padding:20px}
+  #draw-section .rollstrip{grid-template-columns:repeat(3,1fr);}
 }
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 </head>
 <body>
@@ -215,92 +265,110 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 <div class="orb o3"></div>
 <div class="grid-lines"></div>
 
-<!-- ── HERO ── -->
+<!-- ── HERO (compact) ── -->
 <header class="hero">
   <span class="trophy">🏆</span>
-  <div class="open-badge"><span class="pulse-dot"></span> Tracking the 2026 Bracket</div>
   <p class="eyebrow">48 Nations &middot; 104 Matches &middot; 3 Host Countries</p>
   <h1 class="hero-title">
     <span class="word">FIFA</span>
     <span class="word accent">WORLD CUP</span>
     <span class="word">2026</span>
   </h1>
-  <p class="hero-sub">USA &middot; CANADA &middot; MEXICO</p>
-
-  <div class="cd-grid">
-    <div class="cd-card hi">
-      <span class="cd-label">🌍 Expected Global Viewership</span>
-      <span class="cd-date" id="viewership-stat">6 Billion+</span>
-      <span class="cd-note" id="viewership-note">FIFA projects this will be the most-watched sporting event in history</span>
-    </div>
-    <div class="cd-card blue-card">
-      <span class="cd-label">Tournament Window</span>
-      <span class="cd-date" id="tournament-dates">June 11 – July 19, 2026</span>
-      <span class="cd-note">Opening Match through the Final</span>
-    </div>
-  </div>
-  <a href="#assignments" class="hero-cta">See Team Assignments ↓</a>
+  <p class="hero-sub">USA &middot; CANADA &middot; MEXICO &middot; June 11 – July 19</p>
 </header>
 
-<!-- ── STADIUM IMAGE ── -->
-<div class="stadium-wrap">
-  <img
-    class="stadium-img"
-    src="https://images.unsplash.com/photo-1516242981651-2ee338449dea?w=1600&q=85&auto=format&fit=crop"
-    alt="Aerial view of a World Cup soccer stadium"
-    loading="lazy"
-  />
-  <div class="stadium-overlay"></div>
-  <span class="stadium-label">Photo: Pedro Menezes / Unsplash</span>
+<!-- ── THE DRAW ── -->
+<div id="draw-section">
+  <div class="d-wrap">
+
+    <div class="board">
+      <p class="d-eyebrow">Group stage &middot; 48 teams &middot; 12 groups</p>
+      <h2 class="d-title">The Draw <span class="thin">/ how the teams were picked</span></h2>
+      <p class="d-sub">Six managers earn a pick slot by rolling a die, then take turns drawing teams. Each pick pulls from the fullest groups first, draining every group evenly before moving down — so no group is gutted before another is touched.</p>
+
+      <div class="controls">
+        <button id="play">&#9654; Run the draw</button>
+        <button id="step" class="ghost">Step &rsaquo;</button>
+        <button id="reset" class="ghost">Replay</button>
+        <label class="speed">Speed
+          <input type="range" id="spd" min="1" max="5" value="3"/>
+        </label>
+      </div>
+
+      <div class="ticker idle" id="ticker">
+        <span class="d-badge" id="badge">Ready</span>
+        <span class="d-msg" id="msg">Press <b>Run the draw</b> to begin. Phase one: roll for pick order.</span>
+      </div>
+
+      <div class="rollstrip" id="rollstrip"></div>
+    </div>
+
+    <div class="d-layout">
+      <section>
+        <p class="panel-title">The groups <span id="potsleft">48 teams left</span></p>
+        <div class="pots" id="pots"></div>
+      </section>
+      <section>
+        <p class="panel-title">Rosters <span id="picksdone">0 / 48 picks</span></p>
+        <div class="rosters" id="rosters"></div>
+      </section>
+    </div>
+
+    <div class="draw-footer">Reproducible draw &middot; highest-group-first &middot; random tie-break</div>
+  </div>
 </div>
 
 <!-- ── HOW THE RAFFLE WORKS ── -->
 <section class="raffle-sec" id="how-it-works">
   <h2 class="sec-title">How the Raffle Works</h2>
-  <p class="sec-sub">Each participant is randomly assigned teams from the 48 nations, then roots for their countries through the entire tournament. Three place tiers — bragging rights on the line.</p>
+  <p class="sec-sub">Each participant is randomly assigned 8 teams from the 48 nations competing. Root for your countries through the entire tournament — three places awarded.</p>
 
-  <!-- Flow cards -->
   <div class="raffle-flow">
     <div class="rflow-card rfc-assign">
       <span class="rflow-icon">🎲</span>
-      <h3>Random Team Assignment</h3>
-      <p>Every participant is randomly assigned teams/countries from the field of 48. The number of teams each player receives depends on how many people are in the raffle — the more players, the fewer teams per person.</p>
+      <h3>Team Assignment</h3>
+      <p>Every participant draws 8 teams from the field of 48 via the seeded draw shown above. Each of the 12 groups is drained evenly so no single group is gutted before another is touched.</p>
     </div>
     <div class="rflow-card rfc-1st">
       <span class="rflow-icon">🥇</span>
       <h3>1st Place</h3>
-      <p>If one of your assigned countries wins the FIFA World Cup Final and lifts the trophy, you win 1st place. This is the top prize.</p>
+      <p>The entrant holding the team that wins the World Cup Final wins 1st place.</p>
     </div>
     <div class="rflow-card rfc-2nd">
       <span class="rflow-icon">🥈</span>
       <h3>2nd Place</h3>
-      <p>The player holding the World Cup runner-up team wins 2nd place. If that nation belongs to the same player who already won 1st place, 2nd place goes to the player holding the highest FIFA-ranked team remaining.</p>
+      <p>The entrant holding the runner-up wins 2nd place — unless that entrant also holds 1st place. In that case the tiebreaker rules below apply.</p>
     </div>
     <div class="rflow-card rfc-3rd">
       <span class="rflow-icon">🥉</span>
       <h3>3rd Place</h3>
-      <p>The team that wins the 3rd-place match (the game between the two semi-final losers) earns 3rd place. If the winner of 3rd place also has a team that wins 1st or second place, only the higher placement counts. Third place then goes to the highest ranking team not assigned by 1st place or 2nd place winner.</p>
-    </div>
-    <div class="rflow-card rfc-rule">
-      <span class="rflow-icon">📋</span>
-      <h3>One Place Per Player</h3>
-      <p>If you're lucky enough to hold teams that finish in multiple positions, only your highest placement counts. The next tier rolls down to the next eligible player, so every place goes to a different person.</p>
+      <p>The entrant holding the winner of the 3rd-place match wins 3rd place. If they already hold a higher placement, the same roll-down logic applies.</p>
     </div>
   </div>
 
-
-  <!-- Rules clarifications -->
   <div class="rules-box">
-    <h3>⚖️ Key Rules</h3>
-    <ul class="rules-list">
-      <li>Each player is randomly assigned an equal share of the 48 teams via the raffle draw.</li>
-      <li>If a single player holds both the 1st and 2nd place finishers, only 1st place is awarded to them. 2nd place then goes to the player holding the highest FIFA-ranked team among all other players.</li>
-      <li>3rd place goes to the team that wins the 3rd place match. If the winner of 3rd place also has a team that wins 1st or second place, only the higher placement counts. Third place then goes to the highest ranking team not assigned by 1st place or 2nd place winner.</li>
-      <li>If you hold multiple finishers in the top three, only your best placement counts. Lower placements roll to the next eligible player.</li>
+    <h3>⚖️ Tiebreaker for Second Place</h3>
+    <p style="font-size:14px;color:var(--text-muted);line-height:1.7;margin-bottom:20px">If the entrant holding <span class="tb-highlight">First Place</span> would, under the standard scoring rules, also hold the team that lost the Final Match, then Second Place shall instead be awarded as follows:</p>
+    <ul class="tb-list">
+      <li class="tb-a">Compare the teams that lost <strong>Match 61</strong> and <strong>Match 62</strong>. Second Place is awarded to the entrant holding the losing team with the <span class="tb-highlight">greater number of goals scored</span> in its respective match.</li>
+      <li class="tb-b">If those two losing teams scored an equal number of goals, the following criteria apply in this exact order, each resolving the tie before the next is consulted:
+        <ul class="tb-sub">
+          <li>(1) Higher possession percentage</li>
+          <li>(2) More shots on goal</li>
+          <li>(3) More total shot attempts</li>
+          <li>(4) Fewer fouls</li>
+          <li>(5) Fewer yellow cards</li>
+          <li>(6) Fewer red cards</li>
+          <li>(7) More corner kicks</li>
+          <li>(8) More saves</li>
+        </ul>
+      </li>
+      <li class="tb-c">If both losing teams of Matches 61 and 62 are held by the First-Place entrant, apply subsections (a)–(b) to the teams that lost <strong>Matches 57, 58, 59, and 60</strong>, ranked first by goals scored and then by the criteria in (b).</li>
+      <li class="tb-d">The same procedure applies where the First-Place or Second-Place entrant also holds the winner of the <strong>Third-Place Match</strong>: that placement is reassigned using subsections (a)–(b).</li>
+      <li class="tb-e"><span class="tb-highlight">Final backstop.</span> If two or more teams remain tied after every criterion above, the tie shall be resolved however the organizer of the raffle determines, which is final and binding.</li>
     </ul>
   </div>
 
-  <!-- FIFA Links -->
   <div class="fifa-link-wrap">
     <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener noreferrer" class="fifa-link">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
@@ -313,79 +381,11 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   </div>
 </section>
 
-<!-- ── THE 48 NATIONS ── -->
-<section class="countries">
-  <h2 class="sec-title">The 48 Nations</h2>
-  <p class="sec-sub">Filter by confederation.</p>
-  <div class="conf-legend">
-    <div class="conf-item"><span class="conf-abbr">CONCACAF</span><span class="conf-fullname">Confederation of North, Central America &amp; Caribbean Association Football</span></div>
-    <div class="conf-item"><span class="conf-abbr">CONMEBOL</span><span class="conf-fullname">Confederación Sudamericana de Fútbol (South American Football Confederation)</span></div>
-    <div class="conf-item"><span class="conf-abbr">UEFA</span><span class="conf-fullname">Union of European Football Associations</span></div>
-    <div class="conf-item"><span class="conf-abbr">CAF</span><span class="conf-fullname">Confederation of African Football</span></div>
-    <div class="conf-item"><span class="conf-abbr">AFC</span><span class="conf-fullname">Asian Football Confederation</span></div>
-    <div class="conf-item"><span class="conf-abbr">OFC</span><span class="conf-fullname">Oceania Football Confederation</span></div>
-  </div>
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-conf="ALL">All 48</button>
-    <button class="tab" data-conf="CONCACAF">CONCACAF</button>
-    <button class="tab" data-conf="CONMEBOL">CONMEBOL</button>
-    <button class="tab" data-conf="UEFA">UEFA</button>
-    <button class="tab" data-conf="CAF">CAF</button>
-    <button class="tab" data-conf="AFC">AFC</button>
-    <button class="tab" data-conf="OFC">OFC</button>
-  </div>
-  <div class="cgrid" id="cgrid"><div class="loading">Loading nations…</div></div>
-</section>
-
-<!-- ── KEY MATCHES ── -->
-<section class="countries" id="key-matches">
-  <h2 class="sec-title">Big Games to Watch</h2>
-  <p class="sec-sub">A few of the marquee dates and times on the calendar — all times shown in Eastern (EST/EDT).</p>
-  <div class="kmgrid" id="kmgrid"><div class="loading">Loading schedule…</div></div>
-</section>
-
 <!-- ── TEAM ASSIGNMENTS ── -->
-<section class="countries" id="assignments">
+<section class="assign-sec" id="assignments">
   <h2 class="sec-title">Team Assignments</h2>
-  <p class="sec-sub">Once the draw is complete, every participant's assigned countries will be listed here so everyone can track how their teams are doing.</p>
-  <div class="agrid" id="agrid"><div class="loading">Loading assignments…</div></div>
-</section>
-
-<!-- ── BRACKET ── -->
-<section class="countries" id="bracket">
-  <h2 class="sec-title">The Bracket</h2>
-  <p class="sec-sub">An empty look at the road to the Final — 12 groups of 4 funnel into a 32-team knockout bracket. We'll fill in results as the tournament unfolds.</p>
-  <div class="fifa-link-wrap" style="margin-bottom:32px">
-    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" rel="noopener noreferrer" class="fifa-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-      View Official FIFA Bracket ↗
-    </a>
-  </div>
-  <div id="bracket-wrap"></div>
-</section>
-
-<!-- ── REGISTER ── -->
-<section class="reg" id="register">
-  <div class="reg-inner">
-    <h2 class="sec-title">Join the Raffle</h2>
-    <p class="reg-sub">Sign up to be randomly assigned teams from the 48 nations. The raffle is <strong>open now</strong> — teams are assigned at the draw.</p>
-    <div class="fblock">
-      <div class="ffield">
-        <label for="fname">Full Name</label>
-        <input type="text" id="fname" placeholder="John Doe" autocomplete="name"/>
-      </div>
-      <div class="ffield">
-        <label for="contact">Email or Phone Number</label>
-        <input type="text" id="contact" placeholder="john@email.com  or  555-867-5309" autocomplete="email"/>
-      </div>
-      <div class="ecnt" id="ecnt">Checking current entries…</div>
-      <button class="sbtn" id="sbtn" onclick="submitEntry()">
-        <span id="btntxt">Sign Me Up</span>
-      </button>
-      <p class="fnote">⚽ Your info is stored securely and used only for raffle tracking.</p>
-    </div>
-    <div class="toast" id="toast"></div>
-  </div>
+  <p class="sec-sub">Every participant's assigned countries are listed below. Root for your teams all the way to the Final.</p>
+  <div class="agrid" id="agrid"><div class="a-empty">Loading assignments…</div></div>
 </section>
 
 <!-- ── FOOTER ── -->
@@ -401,5 +401,176 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 </footer>
 
 <script src="/app.js"></script>
+<script>
+/* ── THE DRAW ───────────────────────────────────────────── */
+const NAMES = ["Alex","Althea","Felipe","Jeremiah","Justin","Sean"];
+const GROUPS = {
+  A:["Mexico","South Africa","South Korea","Czechia"],
+  B:["Canada","Bosnia-Herzegovina","Qatar","Switzerland"],
+  C:["Brazil","Morocco","Haiti","Scotland"],
+  D:["United States","Paraguay","Australia","Türkiye"],
+  E:["Germany","Curacao","Ivory Coast","Ecuador"],
+  F:["Netherlands","Japan","Sweden","Tunisia"],
+  G:["Belgium","Egypt","Iran","New Zealand"],
+  H:["Spain","Cape Verde","Saudi Arabia","Uruguay"],
+  I:["France","Senegal","Iraq","Norway"],
+  J:["Argentina","Algeria","Austria","Jordan"],
+  K:["Portugal","Congo DR","Uzbekistan","Colombia"],
+  L:["England","Croatia","Ghana","Panama"]
+};
+const LETTERS = Object.keys(GROUPS);
+const PICKS_PER_PERSON = 8;
+
+const SEED = 20260608;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var rng=mulberry32(SEED);
+var rint=function(n){return Math.floor(rng()*n);};
+var choice=function(arr){return arr[rint(arr.length)];};
+
+var slotOf={},order=[],plan=[],idx=0,timer=null,playing=false;
+
+function buildPlan(){
+  rng=mulberry32(SEED);
+  slotOf={};order=[];plan=[];idx=0;
+  var rosters={};
+  NAMES.forEach(function(n){rosters[n]=[];});
+  var rem={};
+  LETTERS.forEach(function(g){rem[g]=[].concat(GROUPS[g]);});
+
+  var taken=new Set();
+  NAMES.forEach(function(name){
+    var rolls=[],r;
+    do{r=1+rint(6);rolls.push(r);}while(taken.has(r));
+    taken.add(r);slotOf[name]=r;
+    plan.push({type:"roll",name:name,rolls:rolls.slice(),slot:r});
+  });
+  order=NAMES.slice().sort(function(a,b){return slotOf[a]-slotOf[b];});
+  plan.push({type:"order"});
+
+  for(var round=1;round<=PICKS_PER_PERSON;round++){
+    order.forEach(function(name){
+      var live=LETTERS.filter(function(g){return rem[g].length>0;});
+      var top=Math.max.apply(null,live.map(function(g){return rem[g].length;}));
+      var tied=live.filter(function(g){return rem[g].length===top;});
+      var g=choice(tied);
+      var team=choice(rem[g]);
+      rem[g]=rem[g].filter(function(t){return t!==team;});
+      plan.push({type:"pick",name:name,slot:slotOf[name],group:g,team:team,top:top,round:round});
+    });
+  }
+}
+
+function cssId(s){return s.replace(/[^a-zA-Z]/g,"");}
+
+function renderShell(){
+  var rs=document.getElementById("rollstrip");
+  rs.innerHTML="";
+  NAMES.forEach(function(name){
+    var d=document.createElement("div");
+    d.className="rc";d.id="rc-"+name;
+    d.innerHTML='<div class="rname">'+name+'</div><div class="rdie" id="die-'+name+'">·</div><div class="rrolls" id="rl-'+name+'"></div>';
+    rs.appendChild(d);
+  });
+  var pots=document.getElementById("pots");
+  pots.innerHTML="";
+  LETTERS.forEach(function(g){
+    var div=document.createElement("div");
+    div.className="pot";div.id="pot-"+g;
+    var inner='<div class="ph">Group '+g+'<span class="ct" id="ct-'+g+'">4</span></div>';
+    GROUPS[g].forEach(function(t){
+      inner+='<div class="d-team" id="t-'+g+'-'+cssId(t)+'">'+t+'</div>';
+    });
+    div.innerHTML=inner;
+    pots.appendChild(div);
+  });
+  var ros=document.getElementById("rosters");
+  ros.innerHTML="";
+  NAMES.forEach(function(name){
+    var div=document.createElement("div");
+    div.className="ros";div.id="ros-"+name;
+    div.innerHTML='<div class="rh"><div class="d-slot" id="slot-'+name+'">–</div><div class="nm">'+name+'</div><div class="cnt" id="cnt-'+name+'">0 / 8</div></div><div class="chips" id="chips-'+name+'"></div>';
+    ros.appendChild(div);
+  });
+  document.getElementById("potsleft").textContent="48 teams left";
+  document.getElementById("picksdone").textContent="0 / 48 picks";
+}
+
+function setTicker(html,live){
+  document.getElementById("msg").innerHTML=html;
+  var t=document.getElementById("ticker"),b=document.getElementById("badge");
+  if(live){t.classList.remove("idle");b.textContent="Live";}
+  else{t.classList.add("idle");b.textContent="Done";}
+}
+
+function applyStep(s){
+  if(s.type==="roll"){
+    document.getElementById("die-"+s.name).textContent=s.slot;
+    document.getElementById("rl-"+s.name).textContent=s.rolls.length>1?"rolled "+s.rolls.join(","):"clean";
+    document.getElementById("rc-"+s.name).classList.add("done");
+    document.getElementById("slot-"+s.name).textContent=s.slot;
+    setTicker("<b>"+s.name+"</b> rolled "+s.rolls.join(", ")+" → slot <b>"+s.slot+"</b>.",true);
+  } else if(s.type==="order"){
+    var ord=order.map(function(n){return slotOf[n]+". "+n;}).join("  ·  ");
+    setTicker("Pick order locked → "+ord+". Now the draw begins.",true);
+    var ros=document.getElementById("rosters");
+    order.forEach(function(n){ros.appendChild(document.getElementById("ros-"+n));});
+  } else if(s.type==="pick"){
+    document.querySelectorAll("#draw-section .pot.active").forEach(function(e){e.classList.remove("active");});
+    document.querySelectorAll("#draw-section .ros.turn").forEach(function(e){e.classList.remove("turn");});
+    var pot=document.getElementById("pot-"+s.group);
+    pot.classList.add("active");
+    document.getElementById("ros-"+s.name).classList.add("turn");
+    var teamEl=document.getElementById("t-"+s.group+"-"+cssId(s.team));
+    if(teamEl){teamEl.classList.add("flash");setTimeout(function(){teamEl.classList.add("gone");},220);}
+    var ctEl=document.getElementById("ct-"+s.group);
+    var left=(+ctEl.textContent)-1;ctEl.textContent=left;
+    if(left===0) pot.classList.add("empty");
+    var chips=document.getElementById("chips-"+s.name);
+    document.querySelectorAll("#draw-section .chip.new").forEach(function(c){c.classList.remove("new");});
+    var chip=document.createElement("span");
+    chip.className="chip new";chip.textContent=s.group+" · "+s.team;
+    chips.appendChild(chip);
+    var made=chips.children.length;
+    document.getElementById("cnt-"+s.name).textContent=made+" / 8";
+    var totalLeft=LETTERS.reduce(function(a,g){return a+(+document.getElementById("ct-"+g).textContent);},0);
+    document.getElementById("potsleft").textContent=totalLeft+" teams left";
+    var done=plan.slice(0,idx+1).filter(function(p){return p.type==="pick";}).length;
+    document.getElementById("picksdone").textContent=done+" / 48 picks";
+    setTicker("Round "+s.round+" · <b>"+s.name+"</b> (slot "+s.slot+") draws from Group <b>"+s.group+"</b> ["+s.top+" left] → <b>"+s.team+"</b>.",true);
+  }
+}
+
+function stepOnce(){
+  if(idx>=plan.length){finish();return false;}
+  applyStep(plan[idx]);idx++;
+  if(idx>=plan.length){finish();}
+  return true;
+}
+function finish(){
+  stop();
+  document.querySelectorAll("#draw-section .pot.active").forEach(function(e){e.classList.remove("active");});
+  document.querySelectorAll("#draw-section .ros.turn").forEach(function(e){e.classList.remove("turn");});
+  setTicker("Draw complete — all 48 teams assigned, 8 per manager.",false);
+  document.getElementById("play").disabled=true;
+  document.getElementById("step").disabled=true;
+}
+function delay(){return 920-(+document.getElementById("spd").value-1)*180;}
+function loop(){if(!playing)return;if(stepOnce()){timer=setTimeout(loop,delay());}}
+function play(){if(playing)return;playing=true;document.getElementById("play").textContent="❚❚ Pause";loop();}
+function stop(){playing=false;clearTimeout(timer);document.getElementById("play").textContent="▶ Run the draw";}
+
+document.getElementById("play").addEventListener("click",function(){playing?stop():play();});
+document.getElementById("step").addEventListener("click",function(){stop();stepOnce();});
+document.getElementById("reset").addEventListener("click",function(){
+  stop();buildPlan();renderShell();
+  document.getElementById("play").disabled=false;
+  document.getElementById("step").disabled=false;
+  document.getElementById("play").textContent="▶ Run the draw";
+  setTicker("Press <b>Run the draw</b> to begin. Phase one: roll for pick order.",false);
+});
+
+buildPlan();
+renderShell();
+</script>
 </body>
 </html>
