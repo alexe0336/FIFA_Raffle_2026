@@ -73,16 +73,6 @@ section,header,footer,.draw-section{position:relative;z-index:1}
 .fifa-link svg{width:18px;height:18px;opacity:.6;transition:opacity .2s}
 .fifa-link:hover svg{opacity:1}
 
-/* ── ASSIGNMENTS ────────────────────────────────────────── */
-.assign-sec{max-width:1200px;margin:0 auto;padding:80px 24px;border-top:1px solid var(--border)}
-.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.acard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s}
-.acard:hover{border-color:var(--green)}
-.a-name{font-family:var(--fc);font-weight:700;font-size:16px;letter-spacing:.06em;color:var(--text)}
-.a-teams{display:flex;flex-wrap:wrap;gap:6px}
-.a-team{font-size:12px;letter-spacing:.04em;background:var(--bg-card2);border:1px solid var(--border);border-radius:50px;padding:5px 12px;color:var(--text-muted)}
-.a-empty{grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 0;font-size:14px;line-height:1.7}
-
 /* ── TIEBREAKER LIST ────────────────────────────────────── */
 .tb-list{list-style:none;display:flex;flex-direction:column;gap:14px}
 .tb-list>li{font-size:14px;color:var(--text-muted);line-height:1.7;padding-left:28px;position:relative}
@@ -256,6 +246,7 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   #draw-section .rollstrip{grid-template-columns:repeat(3,1fr);}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+#draw-section.instant *{animation:none!important;transition:none!important;}
 </style>
 </head>
 <body>
@@ -282,22 +273,22 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <div class="d-wrap">
 
     <div class="board">
-      <p class="d-eyebrow">Group stage &middot; 48 teams &middot; 12 groups</p>
+      <p class="d-eyebrow">Group stage &middot; 48 teams &middot; 12 pots</p>
       <h2 class="d-title">The Draw <span class="thin">/ how the teams were picked</span></h2>
-      <p class="d-sub">Six managers earn a pick slot by rolling a die, then take turns drawing teams. Each pick pulls from the fullest groups first, draining every group evenly before moving down — so no group is gutted before another is touched.</p>
+      <p class="d-sub">Six managers earn a pick slot by rolling a die, then take turns drawing teams. Each pick pulls from the fullest pots first, draining every group evenly before moving down a tier — and within a pot, teams come off the board in order, top seed first.</p>
 
       <div class="controls">
-        <button id="play">&#9654; Run the draw</button>
+        <button id="play">&#9654; Watch the draw</button>
         <button id="step" class="ghost">Step &rsaquo;</button>
-        <button id="reset" class="ghost">Replay</button>
+        <button id="reset" class="ghost">Show final result</button>
         <label class="speed">Speed
           <input type="range" id="spd" min="1" max="5" value="3"/>
         </label>
       </div>
 
       <div class="ticker idle" id="ticker">
-        <span class="d-badge" id="badge">Ready</span>
-        <span class="d-msg" id="msg">Press <b>Run the draw</b> to begin. Phase one: roll for pick order.</span>
+        <span class="d-badge" id="badge">Done</span>
+        <span class="d-msg" id="msg">Final result shown below. Press <b>Watch the draw</b> to replay the selection.</span>
       </div>
 
       <div class="rollstrip" id="rollstrip"></div>
@@ -305,7 +296,7 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
 
     <div class="d-layout">
       <section>
-        <p class="panel-title">The groups <span id="potsleft">48 teams left</span></p>
+        <p class="panel-title">The pots <span id="potsleft">48 teams left</span></p>
         <div class="pots" id="pots"></div>
       </section>
       <section>
@@ -314,7 +305,7 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
       </section>
     </div>
 
-    <div class="draw-footer">Reproducible draw &middot; highest-group-first &middot; random tie-break</div>
+    <div class="draw-footer">Reproducible draw &middot; highest-pot-first &middot; top seed off the board first</div>
   </div>
 </div>
 
@@ -381,13 +372,6 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   </div>
 </section>
 
-<!-- ── TEAM ASSIGNMENTS ── -->
-<section class="assign-sec" id="assignments">
-  <h2 class="sec-title">Team Assignments</h2>
-  <p class="sec-sub">Every participant's assigned countries are listed below. Root for your teams all the way to the Final.</p>
-  <div class="agrid" id="agrid"><div class="a-empty">Loading assignments…</div></div>
-</section>
-
 <!-- ── FOOTER ── -->
 <footer>
   <div class="fbadge">⚽ FIFA World Cup 2026</div>
@@ -400,177 +384,6 @@ footer{border-top:1px solid var(--border);text-align:center;padding:48px 24px;di
   <p class="madeby">Made with ⚽ by <span>Alex</span></p>
 </footer>
 
-<script src="/app.js"></script>
-<script>
-/* ── THE DRAW ───────────────────────────────────────────── */
-const NAMES = ["Alex","Althea","Felipe","Jeremiah","Justin","Sean"];
-const GROUPS = {
-  A:["Mexico","South Africa","South Korea","Czechia"],
-  B:["Canada","Bosnia-Herzegovina","Qatar","Switzerland"],
-  C:["Brazil","Morocco","Haiti","Scotland"],
-  D:["United States","Paraguay","Australia","Türkiye"],
-  E:["Germany","Curacao","Ivory Coast","Ecuador"],
-  F:["Netherlands","Japan","Sweden","Tunisia"],
-  G:["Belgium","Egypt","Iran","New Zealand"],
-  H:["Spain","Cape Verde","Saudi Arabia","Uruguay"],
-  I:["France","Senegal","Iraq","Norway"],
-  J:["Argentina","Algeria","Austria","Jordan"],
-  K:["Portugal","Congo DR","Uzbekistan","Colombia"],
-  L:["England","Croatia","Ghana","Panama"]
-};
-const LETTERS = Object.keys(GROUPS);
-const PICKS_PER_PERSON = 8;
-
-const SEED = 20260608;
-function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
-var rng=mulberry32(SEED);
-var rint=function(n){return Math.floor(rng()*n);};
-var choice=function(arr){return arr[rint(arr.length)];};
-
-var slotOf={},order=[],plan=[],idx=0,timer=null,playing=false;
-
-function buildPlan(){
-  rng=mulberry32(SEED);
-  slotOf={};order=[];plan=[];idx=0;
-  var rosters={};
-  NAMES.forEach(function(n){rosters[n]=[];});
-  var rem={};
-  LETTERS.forEach(function(g){rem[g]=[].concat(GROUPS[g]);});
-
-  var taken=new Set();
-  NAMES.forEach(function(name){
-    var rolls=[],r;
-    do{r=1+rint(6);rolls.push(r);}while(taken.has(r));
-    taken.add(r);slotOf[name]=r;
-    plan.push({type:"roll",name:name,rolls:rolls.slice(),slot:r});
-  });
-  order=NAMES.slice().sort(function(a,b){return slotOf[a]-slotOf[b];});
-  plan.push({type:"order"});
-
-  for(var round=1;round<=PICKS_PER_PERSON;round++){
-    order.forEach(function(name){
-      var live=LETTERS.filter(function(g){return rem[g].length>0;});
-      var top=Math.max.apply(null,live.map(function(g){return rem[g].length;}));
-      var tied=live.filter(function(g){return rem[g].length===top;});
-      var g=choice(tied);
-      var team=choice(rem[g]);
-      rem[g]=rem[g].filter(function(t){return t!==team;});
-      plan.push({type:"pick",name:name,slot:slotOf[name],group:g,team:team,top:top,round:round});
-    });
-  }
-}
-
-function cssId(s){return s.replace(/[^a-zA-Z]/g,"");}
-
-function renderShell(){
-  var rs=document.getElementById("rollstrip");
-  rs.innerHTML="";
-  NAMES.forEach(function(name){
-    var d=document.createElement("div");
-    d.className="rc";d.id="rc-"+name;
-    d.innerHTML='<div class="rname">'+name+'</div><div class="rdie" id="die-'+name+'">·</div><div class="rrolls" id="rl-'+name+'"></div>';
-    rs.appendChild(d);
-  });
-  var pots=document.getElementById("pots");
-  pots.innerHTML="";
-  LETTERS.forEach(function(g){
-    var div=document.createElement("div");
-    div.className="pot";div.id="pot-"+g;
-    var inner='<div class="ph">Group '+g+'<span class="ct" id="ct-'+g+'">4</span></div>';
-    GROUPS[g].forEach(function(t){
-      inner+='<div class="d-team" id="t-'+g+'-'+cssId(t)+'">'+t+'</div>';
-    });
-    div.innerHTML=inner;
-    pots.appendChild(div);
-  });
-  var ros=document.getElementById("rosters");
-  ros.innerHTML="";
-  NAMES.forEach(function(name){
-    var div=document.createElement("div");
-    div.className="ros";div.id="ros-"+name;
-    div.innerHTML='<div class="rh"><div class="d-slot" id="slot-'+name+'">–</div><div class="nm">'+name+'</div><div class="cnt" id="cnt-'+name+'">0 / 8</div></div><div class="chips" id="chips-'+name+'"></div>';
-    ros.appendChild(div);
-  });
-  document.getElementById("potsleft").textContent="48 teams left";
-  document.getElementById("picksdone").textContent="0 / 48 picks";
-}
-
-function setTicker(html,live){
-  document.getElementById("msg").innerHTML=html;
-  var t=document.getElementById("ticker"),b=document.getElementById("badge");
-  if(live){t.classList.remove("idle");b.textContent="Live";}
-  else{t.classList.add("idle");b.textContent="Done";}
-}
-
-function applyStep(s){
-  if(s.type==="roll"){
-    document.getElementById("die-"+s.name).textContent=s.slot;
-    document.getElementById("rl-"+s.name).textContent=s.rolls.length>1?"rolled "+s.rolls.join(","):"clean";
-    document.getElementById("rc-"+s.name).classList.add("done");
-    document.getElementById("slot-"+s.name).textContent=s.slot;
-    setTicker("<b>"+s.name+"</b> rolled "+s.rolls.join(", ")+" → slot <b>"+s.slot+"</b>.",true);
-  } else if(s.type==="order"){
-    var ord=order.map(function(n){return slotOf[n]+". "+n;}).join("  ·  ");
-    setTicker("Pick order locked → "+ord+". Now the draw begins.",true);
-    var ros=document.getElementById("rosters");
-    order.forEach(function(n){ros.appendChild(document.getElementById("ros-"+n));});
-  } else if(s.type==="pick"){
-    document.querySelectorAll("#draw-section .pot.active").forEach(function(e){e.classList.remove("active");});
-    document.querySelectorAll("#draw-section .ros.turn").forEach(function(e){e.classList.remove("turn");});
-    var pot=document.getElementById("pot-"+s.group);
-    pot.classList.add("active");
-    document.getElementById("ros-"+s.name).classList.add("turn");
-    var teamEl=document.getElementById("t-"+s.group+"-"+cssId(s.team));
-    if(teamEl){teamEl.classList.add("flash");setTimeout(function(){teamEl.classList.add("gone");},220);}
-    var ctEl=document.getElementById("ct-"+s.group);
-    var left=(+ctEl.textContent)-1;ctEl.textContent=left;
-    if(left===0) pot.classList.add("empty");
-    var chips=document.getElementById("chips-"+s.name);
-    document.querySelectorAll("#draw-section .chip.new").forEach(function(c){c.classList.remove("new");});
-    var chip=document.createElement("span");
-    chip.className="chip new";chip.textContent=s.group+" · "+s.team;
-    chips.appendChild(chip);
-    var made=chips.children.length;
-    document.getElementById("cnt-"+s.name).textContent=made+" / 8";
-    var totalLeft=LETTERS.reduce(function(a,g){return a+(+document.getElementById("ct-"+g).textContent);},0);
-    document.getElementById("potsleft").textContent=totalLeft+" teams left";
-    var done=plan.slice(0,idx+1).filter(function(p){return p.type==="pick";}).length;
-    document.getElementById("picksdone").textContent=done+" / 48 picks";
-    setTicker("Round "+s.round+" · <b>"+s.name+"</b> (slot "+s.slot+") draws from Group <b>"+s.group+"</b> ["+s.top+" left] → <b>"+s.team+"</b>.",true);
-  }
-}
-
-function stepOnce(){
-  if(idx>=plan.length){finish();return false;}
-  applyStep(plan[idx]);idx++;
-  if(idx>=plan.length){finish();}
-  return true;
-}
-function finish(){
-  stop();
-  document.querySelectorAll("#draw-section .pot.active").forEach(function(e){e.classList.remove("active");});
-  document.querySelectorAll("#draw-section .ros.turn").forEach(function(e){e.classList.remove("turn");});
-  setTicker("Draw complete — all 48 teams assigned, 8 per manager.",false);
-  document.getElementById("play").disabled=true;
-  document.getElementById("step").disabled=true;
-}
-function delay(){return 920-(+document.getElementById("spd").value-1)*180;}
-function loop(){if(!playing)return;if(stepOnce()){timer=setTimeout(loop,delay());}}
-function play(){if(playing)return;playing=true;document.getElementById("play").textContent="❚❚ Pause";loop();}
-function stop(){playing=false;clearTimeout(timer);document.getElementById("play").textContent="▶ Run the draw";}
-
-document.getElementById("play").addEventListener("click",function(){playing?stop():play();});
-document.getElementById("step").addEventListener("click",function(){stop();stepOnce();});
-document.getElementById("reset").addEventListener("click",function(){
-  stop();buildPlan();renderShell();
-  document.getElementById("play").disabled=false;
-  document.getElementById("step").disabled=false;
-  document.getElementById("play").textContent="▶ Run the draw";
-  setTicker("Press <b>Run the draw</b> to begin. Phase one: roll for pick order.",false);
-});
-
-buildPlan();
-renderShell();
-</script>
+<script src="/draw.js"></script>
 </body>
 </html>
